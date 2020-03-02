@@ -17,7 +17,7 @@ public class Main {
         }
     }
     void printSpendableMoney(Person[] group){
-        int totalMoney = 0;
+        int totalMoney = 000;
         for (Person person: group){
             totalMoney+=person.getMoneyToSpend();
         }
