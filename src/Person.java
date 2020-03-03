@@ -7,7 +7,7 @@ int happiness;
 int danceAffinity;
 int energy;
 
-void setMoneyToSpend(int x){
+public void setMoneyToSpend(int x){
     moneyToSpend = x;
 }
 int getMoneyToSpend(){
