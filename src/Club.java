@@ -6,11 +6,7 @@ int totalMoneySpend = 0;
 int numberOfPeople = 0;
 int numberOfPeopleDancing = 0;
 int musicVolume = 0;
-List<Person> crowd;
-
-void Init () {
-    crowd = new ArrayList<>();
-}
+List<Person> crowd = new ArrayList<>();
 
 void setTotalMoneySpend(int x){
     totalMoneySpend = x;
