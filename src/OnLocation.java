@@ -25,7 +25,7 @@ public class OnLocation {
         while (time <= closeTime) {
 
             //TODO: this is the main body of the simulation: any individual or inter-agent logic should be here
-            main.club.crowd[curStep] = pBehaviour.updatePerson(main.club.crowd[curStep - 1]);
+            main.club.crowd[curStep] = pBehaviour.updatePerson(main.club.crowd[curStep - 1], curStep - 1);
 
             curStep++;
             System.out.println(time);
