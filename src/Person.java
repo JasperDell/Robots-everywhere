@@ -36,15 +36,20 @@ public class Person {
     void setGender(int x) { gender = x; }
     int getGender() {return gender; }
 
-    public void setMoneyToSpend(int x, int i){ moneyToSpend[i] = x; }
-    int getMoneyToSpend(int i){ return moneyToSpend[i]; }
-    void updateMoneyToSpend(int x, int i){ moneyToSpend[i]+=x; }
-    void setHasAlcohol(Boolean x, int i){ hasAlcohol[i] = x; }
-    void setDrinksConsumed(int x, int i){ drinksConsumed[i] +=x; }
-    void setAlcoholTolerance(int x, int i){ alcoholTolerance[i] = x; }
-    void setHappiness(int x, int i){ happiness[i] = x; }
-    void setDanceAffinity(int x, int i){ danceAffinity[i] = x; }
-    void setEnergy(float x, int i){ energy[i] = x; }
+    int arrayPointer = 0;
+    void setArrayPointer(int i){
+        arrayPointer = i;
+    }
+
+    public void setMoneyToSpend(int x){ moneyToSpend[arrayPointer] = x; }
+    int getMoneyToSpend(){ return moneyToSpend[arrayPointer]; }
+    void updateMoneyToSpend(int x){ moneyToSpend[arrayPointer]+=x; }
+    void setHasAlcohol(Boolean x){ hasAlcohol[arrayPointer] = x; }
+    void setDrinksConsumed(int x){ drinksConsumed[arrayPointer] +=x; }
+    void setAlcoholTolerance(int x){ alcoholTolerance[arrayPointer] = x; }
+    void setHappiness(int x){ happiness[arrayPointer] = x; }
+    void setDanceAffinity(int x){ danceAffinity[arrayPointer] = x; }
+    void setEnergy(float x){ energy[arrayPointer] = x; }
     float getEnergy(int i) { return energy[i]; }
 
 
