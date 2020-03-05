@@ -34,6 +34,7 @@ public class Person {
     void updateDrinksConsumed(int x){
         drinksConsumed+=x;
     }
+    int getDrinksConsumed(){ return drinksConsumed;}
     void setAlcoholTolerance(int x){
         alcoholTolerance = x;
     }
