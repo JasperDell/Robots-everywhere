@@ -1,18 +1,11 @@
 import java.util.List;
-import java.util.*;
 
 public class PersonBehaviour {
-    Random random = new Random();
-    List<Person> updatePerson (List<Person> crowd) {
+
+    List<Person> updatePerson (List<Person> crowd, int curStep) {
         for(Person p : crowd) {
-            p.energy--;
-            int money = p.getMoneyToSpend();
-            if (money>=1){
-                if (random.nextBoolean()){
-                    p.updateDrinksConsumed(1);
-                    p.updateMoneyToSpend(-1);
-                }
-            }
+            //System.out.println(curStep + ": " + p.getEnergy(curStep));
+            p.setEnergy(p.getEnergy(curStep) - 1, curStep + 1);
         }
         return crowd;
     }

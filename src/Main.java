@@ -32,7 +32,7 @@ public class Main {
     void initializeCrowd(int startCrowd){
         // For now, no groups: init all patrons separately
         for (int i = 0; i < startCrowd; i++) {
-            Person person = new Person();
+            Person person = new Person(this);
 
             // Index, gender and name
             int index = club.crowd[0].size();
@@ -42,8 +42,10 @@ public class Main {
             person.setName(names.names[gender][random.nextInt(names.names[gender].length)]);
 
             // Set person starting values
-            person.setMoneyToSpend(random.nextInt(20));
-            person.setEnergy(80 + random.nextInt(40));
+            person.setMoneyToSpend(random.nextInt(20), 0);
+            person.setEnergy(80 + random.nextInt(40), 0);
+            person.setHasAlcohol(false, 0);
+            person.setDrinksConsumed(0, 0);
 
             // Finally, add person to the club crowd
             club.crowd[0].add(person);
@@ -56,7 +58,7 @@ public class Main {
     void printSpendableMoney(List<Person> crowd){
         int totalMoney = 0;
         for (Person person: crowd){
-            totalMoney+=person.getMoneyToSpend();
+            totalMoney+=person.getMoneyToSpend(0);
         }
         System.out.println("--------------------------------------");
         System.out.println("Total patron money: " + totalMoney);
@@ -75,8 +77,8 @@ public class Main {
             }
             System.out.print("Gender: ");
             if (person.getGender() == 0) {System.out.println("Male"); } else {System.out.println("Female"); }
-            System.out.println("Energy: " + person.getEnergy());
-            System.out.println("Money: " + person.getMoneyToSpend());
+            System.out.println("Energy: " + person.getEnergy(location.curStep - 1));
+            System.out.println("Money: " + person.getMoneyToSpend(location.curStep - 1));
         }
     }
 
@@ -84,7 +86,7 @@ public class Main {
         LogCrowdTerminal();
         // TODO perpare data for MATLAB
         for (int i = 0; i < location.steps; i++) {
-            //System.out.println(club.crowd[i].get(0).getEnergy());
+            //System.out.println(club.crowd[i].get(0).getEnergy(i));
         }
     }
 
