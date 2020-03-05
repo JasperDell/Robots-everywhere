@@ -53,4 +53,6 @@ public class Person {
     float getEnergy(int i) { return energy[i]; }
 
 
+
+
 }

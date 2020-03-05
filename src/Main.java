@@ -9,7 +9,7 @@ public class Main {
 
     private int startCrowd = 10;
 
-    void main(){
+    void main (){
         // Initialize the club and the location
         location = new OnLocation(this);
         location.InitDay();
@@ -86,7 +86,7 @@ public class Main {
 
     public void LogInfo () {
         LogCrowdTerminal();
-        // TODO perpare data for MATLAB
+        // TODO prepare data for MATLAB
         for (int i = 0; i < location.steps; i++) {
             //System.out.println(club.crowd[i].get(0).getEnergy(i));
         }
