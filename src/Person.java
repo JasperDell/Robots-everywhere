@@ -5,6 +5,7 @@ public class Person {
 
     int steps;
 
+    int[][] position;
     int[] moneyToSpend;
     Boolean[] hasAlcohol;
     int[] drinksConsumed;
@@ -19,6 +20,7 @@ public class Person {
         main = x;
 
         steps = main.location.steps;
+        position = new int[steps][2];
         moneyToSpend = new int[steps];
         hasAlcohol = new Boolean[steps];
         drinksConsumed = new int[steps];
@@ -41,6 +43,9 @@ public class Person {
         arrayPointer = i;
     }
 
+    public void setPosition(int[] x) { position[arrayPointer] = x; }
+    public int[] getPosition(int i){return position[i]; }
+    public int[] getPosition(){return position[arrayPointer]; }
     public void setMoneyToSpend(int x){ moneyToSpend[arrayPointer] = x; }
     int getMoneyToSpend(){ return moneyToSpend[arrayPointer]; }
     void updateMoneyToSpend(int x){ moneyToSpend[arrayPointer]+=x; }
@@ -51,6 +56,7 @@ public class Person {
     void setDanceAffinity(int x){ danceAffinity[arrayPointer] = x; }
     void setEnergy(float x){ energy[arrayPointer] = x; }
     float getEnergy(int i) { return energy[i]; }
+    float getEnergy() { return energy[arrayPointer]; }
 
 
 

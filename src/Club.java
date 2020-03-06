@@ -4,6 +4,12 @@ import java.util.ArrayList;
 public class Club {
     int steps;
 
+    // Bar objects
+    private int[] bar = new int[] {20,220,60,160};
+    private int[][] barStool = {{90, 270, 10, 10},{90, 300, 10, 10}, {90, 330, 10, 10}};
+    private int[] testObject = {150, 300, 100, 20};
+    int[][] barObjects = {bar,barStool[0],barStool[1],barStool[2], testObject};
+
     int[] totalMoneySpend;
     int[] numberOfPeople;
     int[] numberOfPeopleDancing;

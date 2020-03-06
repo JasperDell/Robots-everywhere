@@ -1,10 +1,17 @@
+import us.hebi.matlab.mat.format.Mat5;
+import us.hebi.matlab.mat.format.Mat5Writer;
+import us.hebi.matlab.mat.types.*;
+
 import java.util.*;
+
 
 public class Main {
     Random random = new Random();
 
     public Club club;
     public OnLocation location;
+    public Frame frame;
+    //public Visualiser vis;
     private Names names;
 
     private int startCrowd = 10;
@@ -14,6 +21,8 @@ public class Main {
         location = new OnLocation(this);
         location.InitDay();
         club = new Club(this);
+        frame = new Frame();
+        //vis = new Visualiser();
         names = new Names();
 
         // Initialize x persons to start the day with
@@ -43,9 +52,12 @@ public class Main {
 
             // Set person starting values
             person.setMoneyToSpend(random.nextInt(20));
-            person.setEnergy(80 + random.nextInt(40));
+            person.setEnergy(180 + random.nextInt(60));
             person.setHasAlcohol(false);
             person.setDrinksConsumed(0);
+
+            //person.setPosition(new int[] {random.nextInt(360)  + 40, random.nextInt(360) + 40});
+            person.setPosition(new int[] {190 + random.nextInt(20), 360});
 
             // Finally, add person to the club crowd
             club.crowd[0].add(person);
@@ -79,8 +91,9 @@ public class Main {
             }
             System.out.print("Gender: ");
             if (person.getGender() == 0) {System.out.println("Male"); } else {System.out.println("Female"); }
-            System.out.println("Energy: " + person.getEnergy(location.curStep-1));
+            System.out.println("Position: [" + person.getPosition()[0] + "," + person.getPosition()[1] + "]");
             System.out.println("Money: " + person.getMoneyToSpend());
+            System.out.println("Energy: " + person.getEnergy(location.curStep-1));
         }
     }
 
