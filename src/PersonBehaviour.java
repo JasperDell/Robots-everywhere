@@ -40,8 +40,10 @@ public class PersonBehaviour {
             if (x > bar[0] - 30 && x < bar[0] + bar[2] + 30 && y > bar[1] - 30 && y < bar[1] + bar[3] + 30) {
                 if (p.getHasAlcohol(curStep) <= 0) {
                     System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA they lose money but dont hold their drinks or receive hasDrinked");
-                    p.setMoneyToSpend(p.getMoneyToSpend(curStep) - 1);
-                    p.setHasAlcohol(1);
+                    if (p.getMoneyToSpend(curStep)>0) {
+                        p.setMoneyToSpend(p.getMoneyToSpend(curStep) - 1);
+                        p.setHasAlcohol(1);
+                    }
                 }
             }
 
