@@ -7,7 +7,7 @@ public class Person {
 
     int[][] position;
     int[] moneyToSpend;
-    Boolean[] hasAlcohol;
+    float[] hasAlcohol;
     int[] drinksConsumed;
     int[] alcoholTolerance;
     int[] happiness;
@@ -22,7 +22,7 @@ public class Person {
         steps = main.location.steps;
         position = new int[steps][2];
         moneyToSpend = new int[steps];
-        hasAlcohol = new Boolean[steps];
+        hasAlcohol = new float[steps];
         drinksConsumed = new int[steps];
         alcoholTolerance = new int[steps];
         happiness = new int[steps];
@@ -48,9 +48,13 @@ public class Person {
     public int[] getPosition(){return position[arrayPointer]; }
     public void setMoneyToSpend(int x){ moneyToSpend[arrayPointer] = x; }
     int getMoneyToSpend(){ return moneyToSpend[arrayPointer]; }
+    int getMoneyToSpend(int x){ return moneyToSpend[x]; }
     void updateMoneyToSpend(int x){ moneyToSpend[arrayPointer]+=x; }
-    void setHasAlcohol(Boolean x){ hasAlcohol[arrayPointer] = x; }
+    void setHasAlcohol(float x){ hasAlcohol[arrayPointer] = x; }
+    float getHasAlcohol(){ return hasAlcohol[arrayPointer]; }
+    float getHasAlcohol(int i){ return hasAlcohol[i]; }
     void setDrinksConsumed(int x){ drinksConsumed[arrayPointer] +=x; }
+    int getDrinksConsumed(){ return drinksConsumed[arrayPointer]; }
     void setAlcoholTolerance(int x){ alcoholTolerance[arrayPointer] = x; }
     void setHappiness(int x){ happiness[arrayPointer] = x; }
     void setDanceAffinity(int x){ danceAffinity[arrayPointer] = x; }

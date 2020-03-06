@@ -53,7 +53,7 @@ public class Main {
             // Set person starting values
             person.setMoneyToSpend(random.nextInt(20));
             person.setEnergy(180 + random.nextInt(60));
-            person.setHasAlcohol(false);
+            person.setHasAlcohol(0);
             person.setDrinksConsumed(0);
 
             //person.setPosition(new int[] {random.nextInt(360)  + 40, random.nextInt(360) + 40});
@@ -94,6 +94,7 @@ public class Main {
             System.out.println("Position: [" + person.getPosition()[0] + "," + person.getPosition()[1] + "]");
             System.out.println("Money: " + person.getMoneyToSpend());
             System.out.println("Energy: " + person.getEnergy(location.curStep-1));
+            System.out.println("Drinks consumed: " + person.getDrinksConsumed());
         }
     }
 

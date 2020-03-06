@@ -10,7 +10,7 @@ public class OnLocation {
     private float time;
     private float openTime = 18;
     private float closeTime = 26; // continue counting after 24
-    private float timeIncrement = 0.05f;//0.5f;
+    private float timeIncrement = 0.01f;//0.05f;
     public int steps = (int)((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
     public int curStep = 1;
 
