@@ -5,7 +5,7 @@ public class Person {
 
     int steps;
 
-    int[][] position;
+    float[][] position;
     int[] moneyToSpend;
     float[] hasAlcohol;
     int[] drinksConsumed;
@@ -14,13 +14,17 @@ public class Person {
     int[] danceAffinity;
     float[] energy;
 
+    // Calculation variables
+    float[] goalPosition;
+    int prevGoal;
+
     // Necessary to bring OnLocation.steps over here: determines size of all arrays
     private Main main;
     public Person (Main x) {
         main = x;
 
         steps = main.location.steps;
-        position = new int[steps][2];
+        position = new float[steps][2];
         moneyToSpend = new int[steps];
         hasAlcohol = new float[steps];
         drinksConsumed = new int[steps];
@@ -28,6 +32,9 @@ public class Person {
         happiness = new int[steps];
         danceAffinity = new int[steps];
         energy = new float[steps];
+
+        goalPosition = new float[2];
+        prevGoal = -1;
     }
 
 
@@ -43,9 +50,9 @@ public class Person {
         arrayPointer = i;
     }
 
-    public void setPosition(int[] x) { position[arrayPointer] = x; }
-    public int[] getPosition(int i){return position[i]; }
-    public int[] getPosition(){return position[arrayPointer]; }
+    public void setPosition(float[] x) { position[arrayPointer] = x; }
+    public float[] getPosition(int i){return position[i]; }
+    public float[] getPosition(){return position[arrayPointer]; }
     public void setMoneyToSpend(int x){ moneyToSpend[arrayPointer] = x; }
     int getMoneyToSpend(){ return moneyToSpend[arrayPointer]; }
     int getMoneyToSpend(int x){ return moneyToSpend[x]; }
@@ -62,7 +69,10 @@ public class Person {
     float getEnergy(int i) { return energy[i]; }
     float getEnergy() { return energy[arrayPointer]; }
 
-
+    public void setGoalPosition(float[] x) { goalPosition = x; }
+    public float[] getGoalPosition(){return goalPosition; }
+    public void setPrevGoal(int x) { prevGoal = x; }
+    public int getPrevGoal() { return prevGoal; }
 
 
 }

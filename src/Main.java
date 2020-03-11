@@ -57,7 +57,7 @@ public class Main {
             person.setDrinksConsumed(0);
 
             //person.setPosition(new int[] {random.nextInt(360)  + 40, random.nextInt(360) + 40});
-            person.setPosition(new int[] {190 + random.nextInt(20), 360});
+            person.setPosition(new float[] {190 + random.nextInt(20), 360});
 
             // Finally, add person to the club crowd
             club.crowd[0].add(person);

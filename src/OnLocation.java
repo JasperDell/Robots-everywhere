@@ -6,12 +6,12 @@ public class OnLocation {
         main = x;
     }
 
-    private float simulationTime = 5;
+    private float simulationTime = 10;
     private float time;
     private float openTime = 18;
-    private float closeTime = 26; // continue counting after 24
-    private float timeIncrement = 0.01f;//0.05f;
-    public int steps = (int)((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
+    private float closeTime = 28; // continue counting after 24
+    private float timeIncrement = 0.00833333333333333f;//1/120: every half minute one frame
+    public int steps = (int)Math.ceil((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
     public int curStep = 1;
 
     // Initialize the bar environment, its employees
@@ -24,16 +24,16 @@ public class OnLocation {
         time += timeIncrement;
 
         //TEST VISUALISATION
-        main.frame.Start(main.club, curStep - 1);
+        main.frame.Start(main.club, curStep - 1, time);
 
         // Continue the simulation until closing time
         while (time <= closeTime) {
 
             //TODO: this is the main body of the simulation: any individual or inter-agent logic should be here
-            main.club.crowd[curStep] = pBehaviour.updatePerson(main, main.club.crowd[curStep - 1], curStep - 1);
+            main.club.crowd[curStep] = pBehaviour.updatePerson(main, main.club.crowd[curStep - 1], curStep - 1, time);
 
             // Visualisation
-            main.frame.Update(main.club, curStep - 1);
+            main.frame.Update(main.club, curStep - 1, time);
 
             curStep++;
             System.out.println(time);

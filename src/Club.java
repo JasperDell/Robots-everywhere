@@ -4,11 +4,11 @@ import java.util.ArrayList;
 public class Club {
     int steps;
 
-    // Bar objects
-    private int[] bar = new int[] {20,220,60,160};
-    private int[][] barStool = {{90, 270, 10, 10},{90, 300, 10, 10}, {90, 330, 10, 10}};
-    private int[] testObject = {150, 300, 100, 20};
-    int[][] barObjects = {bar,barStool[0],barStool[1],barStool[2], testObject};
+    // Bar objects (0-3 are position and size, 4 is collision object: 0=not, 1=collision
+    private int[] bar = new int[] {20,220,60,160, 1};
+    private int[][] barStool = {{90, 270, 10, 10, 0},{90, 300, 10, 10, 0}, {90, 330, 10, 10, 0}};
+    private int[] danceFloor = {150, 100, 200, 150, 0};
+    int[][] barObjects = {bar,danceFloor, barStool[0],barStool[1],barStool[2]};
 
     int[] totalMoneySpend;
     int[] numberOfPeople;
