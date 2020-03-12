@@ -21,6 +21,7 @@ public class PersonBehaviour {
                 p.setDrinksConsumed(p.getDrinksConsumed(curStep));
             }
 
+            p.setHasAlcohol(p.getHasAlcohol(curStep)-1);
             p.setMoneyToSpend(p.getMoneyToSpend(curStep));
             p.setEnergy(Math.max(p.getEnergy(curStep) - 1, 0));
 
@@ -29,7 +30,6 @@ public class PersonBehaviour {
                 p.setMoneyToSpend(p.getMoneyToSpend(curStep)-1);
                 p.setHasAlcohol(10);
             }
-
 
         }
         return crowd;
