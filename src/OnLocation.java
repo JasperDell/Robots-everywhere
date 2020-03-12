@@ -6,7 +6,7 @@ public class OnLocation {
         main = x;
     }
 
-    private float simulationTime = 10;
+    private float simulationTime = 2;
     private float time;
     private float openTime = 18;
     private float closeTime = 28; // continue counting after 24

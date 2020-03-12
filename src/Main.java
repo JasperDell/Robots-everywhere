@@ -2,8 +2,12 @@
 //import us.hebi.matlab.mat.format.Mat5Writer;
 //import us.hebi.matlab.mat.types.*;
 
+import java.io.PrintWriter;
 import java.util.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
     Random random = new Random();
@@ -102,8 +106,41 @@ public class Main {
     public void LogInfo () {
         LogCrowdTerminal();
         // TODO prepare data for MATLAB
+        float[] x = new float[location.steps];
+        float[] y = new float[location.steps];
+
         for (int i = 0; i < location.steps; i++) {
             //System.out.println(club.crowd[i].get(0).getEnergy(i));
+            x[i] = club.crowd[0].get(0).getPosition(i)[0];
+            y[i] = club.crowd[0].get(0).getPosition(i)[1];
+        }
+
+        try {
+
+
+            FileWriter writer = new FileWriter("output2.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            float b = 2;
+            var i = 0;
+            bufferedWriter.write('x');
+            bufferedWriter.write(" ");
+            bufferedWriter.write('y');
+            bufferedWriter.newLine();
+            for (i = 0; i < x.length; i++) {
+                b = x[i];
+                bufferedWriter.write(Float.toString(b));
+                //if (i < (a.length - 1)) {
+                bufferedWriter.write(" ");
+                //}
+                b = y[i];
+                bufferedWriter.write(Float.toString(b));
+                bufferedWriter.newLine();
+                //bufferedWriter.write("See You Again!");
+            }
+            //bufferedWriter.newLine();
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
