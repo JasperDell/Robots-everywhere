@@ -14,19 +14,21 @@ public class PersonBehaviour {
 
             if (p.getHasAlcohol(curStep)>0) {
                 p.setHasAlcohol(p.getHasAlcohol(curStep) - 1);
-                if (p.getHasAlcohol()==0){
+                if (p.getHasAlcohol(curStep)==0){
                     p.setDrinksConsumed(p.getDrinksConsumed(curStep)+1);
+                } else{
+                    p.setDrinksConsumed(p.getDrinksConsumed(curStep));
                 }
             } else{
                 p.setDrinksConsumed(p.getDrinksConsumed(curStep));
+                p.setHasAlcohol(0);
             }
 
-            p.setHasAlcohol(p.getHasAlcohol(curStep)-1);
             p.setMoneyToSpend(p.getMoneyToSpend(curStep));
             p.setEnergy(Math.max(p.getEnergy(curStep) - 1, 0));
 
             int drinkChance = random.nextInt(101);
-            if(p.getHasAlcohol() == 0 && p.getMoneyToSpend()>0 &&(drinkChance<p.getLikenessToDrink())){
+            if(p.getHasAlcohol(curStep) == 0 && p.getMoneyToSpend(curStep)>0 &&(drinkChance<p.getLikenessToDrink())){
                 p.setMoneyToSpend(p.getMoneyToSpend(curStep)-1);
                 p.setHasAlcohol(10);
             }
