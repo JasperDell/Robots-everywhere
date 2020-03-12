@@ -9,7 +9,7 @@ public class Person {
 
     float[][] position;
     int[] moneyToSpend;
-    float[] hasAlcohol;
+    int[] hasAlcohol;
     int[] drinksConsumed;
     int[] alcoholTolerance;
     int[] happiness;
@@ -28,7 +28,7 @@ public class Person {
         steps = main.location.steps;
         position = new float[steps][2];
         moneyToSpend = new int[steps];
-        hasAlcohol = new float[steps];
+        hasAlcohol = new int[steps];
         drinksConsumed = new int[steps];
         alcoholTolerance = new int[steps];
         happiness = new int[steps];
@@ -52,23 +52,35 @@ public class Person {
         arrayPointer = i;
     }
 
+
     public void setPosition(float[] x) { position[arrayPointer] = x; }
     public float[] getPosition(int i){return position[i]; }
     public float[] getPosition(){return position[arrayPointer]; }
+
+
+
     public void setMoneyToSpend(int x){ moneyToSpend[arrayPointer] = x; }
     int getMoneyToSpend(){ return moneyToSpend[arrayPointer]; }
     int getMoneyToSpend(int x){ return moneyToSpend[x]; }
-    int getLikenessToDrink(){return likenessToDrink;}
     void updateMoneyToSpend(int x){ moneyToSpend[arrayPointer]+=x; }
-    void setHasAlcohol(float x){ hasAlcohol[arrayPointer] = x; }
-    float getHasAlcohol(){ return hasAlcohol[arrayPointer]; }
-    float getHasAlcohol(int i){ return hasAlcohol[i]; }
+
+    int getLikenessToDrink(){return likenessToDrink;}
+
+    void setHasAlcohol(int x){ hasAlcohol[arrayPointer] = x; }
+    int getHasAlcohol(){ return hasAlcohol[arrayPointer]; }
+    int getHasAlcohol(int i){ return hasAlcohol[i]; }
+
     void updateDrinksConsumed(int x){ drinksConsumed[arrayPointer] +=x; }
     void setDrinksConsumed(int x){drinksConsumed[arrayPointer] = x;}
     int getDrinksConsumed(){ return drinksConsumed[arrayPointer]; }
+    int getDrinksConsumed(int i){ return drinksConsumed[i]; }
+
     void setAlcoholTolerance(int x){ alcoholTolerance[arrayPointer] = x; }
+
     void setHappiness(int x){ happiness[arrayPointer] = x; }
+
     void setDanceAffinity(int x){ danceAffinity[arrayPointer] = x; }
+
     void setEnergy(float x){ energy[arrayPointer] = x; }
     float getEnergy(int i) { return energy[i]; }
     float getEnergy() { return energy[arrayPointer]; }
