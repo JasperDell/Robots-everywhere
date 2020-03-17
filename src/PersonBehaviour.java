@@ -24,12 +24,12 @@ public class PersonBehaviour {
                 p.setHasAlcohol(0);
             }
 
+            p.setMoneyToSpend(p.getMoneyToSpend(curStep));
             if (curStep%4 == 0){
                 p.setEnergy(Math.max(p.getEnergy(curStep) - 1, 0));
             } else {
                 p.setEnergy(Math.max(p.getEnergy(curStep), 0));
             }
-            p.setEnergy(Math.max(p.getEnergy(curStep) - 1, 0));
             int drinkChance = random.nextInt(101);
             int[] bar = main.club.barObjects[0];
             float x = p.getPosition(curStep)[0]; float y = p.getPosition(curStep)[1];

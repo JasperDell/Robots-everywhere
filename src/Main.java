@@ -56,7 +56,7 @@ public class Main {
 
             // Set person starting values
             person.setMoneyToSpend(random.nextInt(20));
-            int energy = 180 + random.nextInt(60);
+            int energy = 160 + random.nextInt(240);
             person.setEnergy(energy);
 
             person.setLikenessToDrink(70);
@@ -123,12 +123,11 @@ public class Main {
             FileWriter writer = new FileWriter("output2.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             float b = 2;
-            var i = 0;
             bufferedWriter.write('x');
             bufferedWriter.write(" ");
             bufferedWriter.write('y');
             bufferedWriter.newLine();
-            for (i = 0; i < x.length; i++) {
+            for (int i = 0; i < x.length; i++) {
                 b = x[i];
                 bufferedWriter.write(Float.toString(b));
                 //if (i < (a.length - 1)) {
