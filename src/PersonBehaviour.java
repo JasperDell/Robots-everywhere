@@ -37,9 +37,9 @@ public class PersonBehaviour {
             if (p.getMoneyToSpend(curStep)==5){
                 p.setLikenessToDrink(15);
             }
-        //    if (p.getEnergy(curStep)==0){
-       //         p.setLikenessToDrink(0);
-        //    }
+            if (p.getEnergy(curStep)==0){
+                p.setLikenessToDrink(0);
+            }
         }
         return crowd;
     }
