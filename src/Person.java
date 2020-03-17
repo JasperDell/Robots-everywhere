@@ -78,6 +78,8 @@ public class Person {
     void setAlcoholTolerance(int x){ alcoholTolerance[arrayPointer] = x; }
 
     void setHappiness(int x){ happiness[arrayPointer] = x; }
+    int getHappiness(int x){return happiness[x];}
+
 
     void setDanceAffinity(int x){ danceAffinity[arrayPointer] = x; }
 

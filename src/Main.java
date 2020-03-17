@@ -56,10 +56,10 @@ public class Main {
 
             // Set person starting values
             person.setMoneyToSpend(random.nextInt(20));
-            int energy = 160 + random.nextInt(240);
-            person.setEnergy(energy);
-
-            person.setLikenessToDrink(70);
+            int energy = 160 + random.nextInt(241);
+            person.setEnergy(energy); // value between 160 and 400
+            person.setHappiness(50 + random.nextInt(26)); // value between 50 and 75
+            person.setLikenessToDrink(70); // value between 0 and 100
             person.setHasAlcohol(0);
             person.setDrinksConsumed(0);
 
