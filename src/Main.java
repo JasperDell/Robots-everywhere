@@ -108,42 +108,160 @@ public class Main {
     public void LogInfo () {
         LogCrowdTerminal();
         // TODO prepare data for MATLAB
-        float[] x = new float[location.steps];
-        float[] y = new float[location.steps];
+        //float[] x = new float[location.steps];
+        //float[] y = new float[location.steps];
+        //int k = club.crowd[0].size();
+        //int[] test = club.totalMoneySpend;
+        //System.out.println(Integer.toString(test[1200]));
 
-        for (int i = 0; i < location.steps; i++) {
-            //System.out.println(club.crowd[i].get(0).getEnergy(i));
-            x[i] = club.crowd[0].get(0).getPosition(i)[0];
-            y[i] = club.crowd[0].get(0).getPosition(i)[1];
-        }
-
+        //for position
         try {
 
-
-            FileWriter writer = new FileWriter("output2.txt", false);
+            FileWriter writer = new FileWriter("Position.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            float b = 2;
-            bufferedWriter.write('x');
-            bufferedWriter.write(" ");
-            bufferedWriter.write('y');
-            bufferedWriter.newLine();
-            for (int i = 0; i < x.length; i++) {
-                b = x[i];
-                bufferedWriter.write(Float.toString(b));
-                //if (i < (a.length - 1)) {
+            float x = 0;
+            float y = 0;
+            for(int k = 0; k<club.crowd[0].size(); k++) {
+                bufferedWriter.write('X' + Integer.toString(k));
                 bufferedWriter.write(" ");
-                //}
-                b = y[i];
-                bufferedWriter.write(Float.toString(b));
-                bufferedWriter.newLine();
-                //bufferedWriter.write("See You Again!");
+                bufferedWriter.write('Y' + Integer.toString(k));
+                bufferedWriter.write(" ");
             }
-            //bufferedWriter.newLine();
+
+            for(int i = 0; i < location.steps; i++) {
+                bufferedWriter.newLine();
+                for (int k = 0; k<club.crowd[0].size(); k++) {
+                    //System.out.println(club.crowd[i].get(0).getEnergy(i));
+                    x = club.crowd[0].get(k).getPosition(i)[0];
+                    y = club.crowd[0].get(k).getPosition(i)[1];
+                    bufferedWriter.write(Float.toString(x));
+                    bufferedWriter.write(" ");
+                    bufferedWriter.write(Float.toString(y));
+                    bufferedWriter.write(" ");
+
+                    //x[i] = club.crowd[0].get(k).getPosition(i)[0];
+                    //y[i] = club.crowd[0].get(k).getPosition(i)[1];
+                }
+/*
+                for (int j = 0; j < x.length; j++) {
+                    b = x[j];
+                    bufferedWriter.write(Float.toString(b));
+                    //if (i < (a.length - 1)) {
+                    bufferedWriter.write(" ");
+                    //}
+                    b = y[j];
+                    bufferedWriter.write(Float.toString(b));
+                    bufferedWriter.newLine();
+                    //bufferedWriter.write("See You Again!");
+                }*/
+            }
+
             bufferedWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } //end position
+
+        //for club
+        try {
+
+            FileWriter writer = new FileWriter("Club.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            int put = 2;
+            //for(int k = 0; k<club.crowd[0].size(); k++) {
+            bufferedWriter.write("Money_spent"); //totalMoneySpend
+            bufferedWriter.write(" ");
+
+            bufferedWriter.write("Amount_people"); //numberOfPeople
+            bufferedWriter.write(" ");
+
+            bufferedWriter.write("People_dancing"); //numberOfPeopleDancing
+            bufferedWriter.write(" ");
+            //}
+            for(int i = 0; i < location.steps; i++) {
+                put = club.totalMoneySpend[i];
+                bufferedWriter.newLine();
+                bufferedWriter.write(Integer.toString(put));
+
+                put = club.numberOfPeople[i];
+                bufferedWriter.write(" ");
+                bufferedWriter.write(Integer.toString(put));
+
+                put = club.numberOfPeopleDancing[i];
+                bufferedWriter.write(" ");
+                bufferedWriter.write(Integer.toString(put));
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } // end club
+
+        //for happiness
+        try {
+            FileWriter writer = new FileWriter("Happiness.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            int put = 0;
+            for(int k = 0; k<club.crowd[0].size(); k++) {
+                bufferedWriter.write("Happiness" + Integer.toString(k));
+                bufferedWriter.write(" ");
+            }
+            for(int i = 0; i < location.steps; i++) {
+                bufferedWriter.newLine();
+                for (int k = 0; k<club.crowd[0].size(); k++) {
+                    put = club.crowd[0].get(k).happiness[i];
+                    bufferedWriter.write(Integer.toString(put));
+                    bufferedWriter.write(" ");
+                }
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } //end happiness
+
+        //for energy
+        try {
+            FileWriter writer = new FileWriter("energy.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            float put = 0;
+            for(int k = 0; k<club.crowd[0].size(); k++) {
+                bufferedWriter.write("energy" + Integer.toString(k));
+                bufferedWriter.write(" ");
+            }
+            for(int i = 0; i < location.steps; i++) {
+                bufferedWriter.newLine();
+                for (int k = 0; k<club.crowd[0].size(); k++) {
+                    put = club.crowd[0].get(k).energy[i];
+                    bufferedWriter.write(Float.toString(put));
+                    bufferedWriter.write(" ");
+                }
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } //end energy
+
+        //for drinksConsumed
+        try {
+            FileWriter writer = new FileWriter("drinksConsumed.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            int put = 0;
+            for(int k = 0; k<club.crowd[0].size(); k++) {
+                bufferedWriter.write("drinksConsumed" + Integer.toString(k));
+                bufferedWriter.write(" ");
+            }
+            for(int i = 0; i < location.steps; i++) {
+                bufferedWriter.newLine();
+                for (int k = 0; k<club.crowd[0].size(); k++) {
+                    put = club.crowd[0].get(k).drinksConsumed[i];
+                    bufferedWriter.write(Integer.toString(put));
+                    bufferedWriter.write(" ");
+                }
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } //end drinksConsumed
     }
+
 
     public static void main(String[] args) {
         (new Main()).main();
