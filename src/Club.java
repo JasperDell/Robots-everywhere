@@ -5,10 +5,10 @@ public class Club {
     int steps;
 
     // Bar objects (0-3 are position and size, 4 is collision object: 0=not, 1=collision
-    private int[] bar = new int[] {20,220,60,160, 1};
-    private int[][] barStool = {{90, 270, 10, 10, 0},{90, 300, 10, 10, 0}, {90, 330, 10, 10, 0}};
-    private int[] danceFloor = {150, 100, 200, 150, 0};
-    int[][] barObjects = {bar,danceFloor, barStool[0],barStool[1],barStool[2]};
+    public static int[] bar = new int[] {20,220,60,160, 1};
+    public static int[][] barStools = {{90, 270, 10, 10, 0},{90, 300, 10, 10, 0}, {90, 330, 10, 10, 0}};
+    public static int[] danceFloor = {150, 100, 200, 150, 0};
+    public static int[][] barObjects = {bar,danceFloor, barStools[0],barStools[1],barStools[2]};
 
     int[] totalMoneySpend;
     int[] numberOfPeople;

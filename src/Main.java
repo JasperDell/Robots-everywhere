@@ -45,17 +45,14 @@ public class Main {
     void initializeCrowd(int startCrowd){
         // For now, no groups: init all patrons separately
         for (int i = 0; i < startCrowd; i++) {
-            Person person = new Person(this);
-
-            // Index, gender and name
-            int index = club.crowd[0].size();
-            person.setIndex(index);
+            int index =  club.crowd[0].size();
             int gender = random.nextInt(2);
-            person.setGender(gender); // Only allow 0>male or 1>female
-            person.setName(names.names[gender][random.nextInt(names.names[gender].length)]);
+            String name = names.names[gender][random.nextInt(names.names[gender].length)];
+
+            Person person = new Person(this, index, gender, name);
 
             // Set person starting values
-            person.setMoneyToSpend(random.nextInt(20));
+            person.setMoneyToSpend(random.nextInt(20)); //are there really people with no money?
             int energy = 160 + random.nextInt(241);
             person.setEnergy(energy); // value between 160 and 400
             person.setHappiness(50 + random.nextInt(26)); // value between 50 and 75

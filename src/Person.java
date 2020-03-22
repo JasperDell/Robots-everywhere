@@ -1,9 +1,8 @@
 public class Person {
-    String name;
-    int index; // All persons have different indexes in order to differentiate them
-    int gender; // 0>male, 1>female
-
-    int steps;
+    final String name;
+    final int index; // All persons have different indexes in order to differentiate them
+    final int gender; // 0>male, 1>female
+    final int steps;
 
     int likenessToDrink;
 
@@ -22,8 +21,11 @@ public class Person {
 
     // Necessary to bring OnLocation.steps over here: determines size of all arrays
     private Main main;
-    public Person (Main x) {
+    public Person (Main x, int index, int gender, String name) {
         main = x;
+        this.index = index;
+        this.name = name;
+        this.gender = gender;
 
         steps = main.location.steps;
         position = new float[steps][2];
@@ -39,12 +41,8 @@ public class Person {
         prevGoal = -1;
     }
 
-
-    void setName (String x) {name = x; }
     String getName () { return name; }
-    void setIndex (int x) {index = x; }
     int getIndex () {return index; }
-    void setGender(int x) { gender = x; }
     int getGender() {return gender; }
     void setLikenessToDrink(int x) {likenessToDrink = x;}
     int arrayPointer = 0;
@@ -91,6 +89,4 @@ public class Person {
     public float[] getGoalPosition(){return goalPosition; }
     public void setPrevGoal(int x) { prevGoal = x; }
     public int getPrevGoal() { return prevGoal; }
-
-
 }

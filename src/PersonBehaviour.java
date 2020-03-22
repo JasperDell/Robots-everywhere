@@ -9,7 +9,6 @@ public class PersonBehaviour {
     List<Person> updatePerson (Main main, List<Person> crowd, int curStep, float time) {
         for(Person p : crowd) {
             p.setArrayPointer(curStep+1);
-            StateDecision ();
             TakeAction (main, p, time, curStep);
 
             if (p.getHasAlcohol(curStep)>0) {
@@ -48,10 +47,6 @@ public class PersonBehaviour {
             }
         }
         return crowd;
-    }
-
-    void StateDecision () {
-
     }
 
     void TakeAction (Main main, Person p, float t, int curStep) {

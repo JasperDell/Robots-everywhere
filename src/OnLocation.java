@@ -12,7 +12,7 @@ public class OnLocation {
     private float closeTime = 28; // continue counting after 24
     private float timeIncrement = 0.00833333333333333f;//1/120: every half minute one frame
     public int steps = (int)Math.ceil((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
-    public int curStep = 1;
+    public static int curStep = 1;
 
     // Initialize the bar environment, its employees
     public void InitDay () {
