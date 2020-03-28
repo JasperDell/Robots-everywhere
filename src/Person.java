@@ -19,15 +19,12 @@ public class Person {
     float[] goalPosition;
     int prevGoal;
 
-    // Necessary to bring OnLocation.steps over here: determines size of all arrays
-    private Main main;
-    public Person (Main x, int index, int gender, String name) {
-        main = x;
+    public Person (int index, int gender, String name) {
         this.index = index;
         this.name = name;
         this.gender = gender;
 
-        steps = main.location.steps;
+        steps = Day.getSteps();
         position = new float[steps][2];
         moneyToSpend = new int[steps];
         hasAlcohol = new int[steps];
@@ -36,7 +33,6 @@ public class Person {
         happiness = new int[steps];
         danceAffinity = new int[steps];
         energy = new float[steps];
-
         goalPosition = new float[2];
         prevGoal = -1;
     }
@@ -46,44 +42,34 @@ public class Person {
     int getGender() {return gender; }
     void setLikenessToDrink(int x) {likenessToDrink = x;}
     int arrayPointer = 0;
-    void setArrayPointer(int i){
-        arrayPointer = i;
-    }
 
-
-    public void setPosition(float[] x) { position[arrayPointer] = x; }
+    public void setNewPosition(float[] x) { position[Day.getCurStep()] = x; }
+    public float[] getLastPosition(){return position[Day.getLastStep()]; }
     public float[] getPosition(int i){return position[i]; }
-    public float[] getPosition(){return position[arrayPointer]; }
 
-
-
-    public void setMoneyToSpend(int x){ moneyToSpend[arrayPointer] = x; }
-    int getMoneyToSpend(){ return moneyToSpend[arrayPointer]; }
-    int getMoneyToSpend(int x){ return moneyToSpend[x]; }
-    void updateMoneyToSpend(int x){ moneyToSpend[arrayPointer]+=x; }
+    public void setNewMoneyToSpend(int x){ moneyToSpend[Day.getCurStep()] = x; }
+    int getLastMoneyToSpend(){ return moneyToSpend[Day.getLastStep()]; }
+    void addToNewMoneyToSpend(int x){ moneyToSpend[Day.getCurStep()]+=x; }
 
     int getLikenessToDrink(){return likenessToDrink;}
 
-    void setHasAlcohol(int x){ hasAlcohol[arrayPointer] = x; }
-    int getHasAlcohol(){ return hasAlcohol[arrayPointer]; }
-    int getHasAlcohol(int i){ return hasAlcohol[i]; }
+    void setNewHasAlcohol(int x){ hasAlcohol[Day.getCurStep()] = x; }
+    int getLastHasAlcohol(){ return hasAlcohol[Day.getLastStep()]; }
 
-    void updateDrinksConsumed(int x){ drinksConsumed[arrayPointer] +=x; }
-    void setDrinksConsumed(int x){drinksConsumed[arrayPointer] = x;}
-    int getDrinksConsumed(){ return drinksConsumed[arrayPointer]; }
-    int getDrinksConsumed(int i){ return drinksConsumed[i]; }
+    void addToNewDrinksConsumed(int x){ drinksConsumed[Day.getCurStep()] +=x; }
+    void setNewDrinksConsumed(int x){drinksConsumed[Day.getCurStep()] = x;}
+    int getLastDrinksConsumed(){ return drinksConsumed[Day.getLastStep()]; }
 
-    void setAlcoholTolerance(int x){ alcoholTolerance[arrayPointer] = x; }
+    void setNewAlcoholTolerance(int x){ alcoholTolerance[Day.getCurStep()] = x; }
 
-    void setHappiness(int x){ happiness[arrayPointer] = x; }
-    int getHappiness(int x){return happiness[x];}
+    void setNewHappiness(int x){ happiness[Day.getCurStep()] = x; }
+    int getLastHappiness(){return happiness[Day.getLastStep()];}
 
 
-    void setDanceAffinity(int x){ danceAffinity[arrayPointer] = x; }
+    void setDanceAffinity(int x){ danceAffinity[Day.getCurStep()] = x; }
 
-    void setEnergy(float x){ energy[arrayPointer] = x; }
-    float getEnergy(int i) { return energy[i]; }
-    float getEnergy() { return energy[arrayPointer]; }
+    void setNewEnergy(float x){ energy[Day.getCurStep()] = x; }
+    float getLastEnergy() { return energy[Day.getLastStep()]; }
 
     public void setGoalPosition(float[] x) { goalPosition = x; }
     public float[] getGoalPosition(){return goalPosition; }

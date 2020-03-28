@@ -6,84 +6,85 @@ public class PersonBehaviour {
 
     Random random = new Random();
 
-    List<Person> updatePerson (Main main, List<Person> crowd, int curStep, float time) {
+    List<Person> updatePersons(List<Person> crowd) {
+        int lastStep = Day.getLastStep();
+        int curStep = Day.getCurStep();
         for(Person p : crowd) {
-            p.setArrayPointer(curStep+1);
-            TakeAction (main, p, time, curStep);
+            TakeAction (p, lastStep);
 
-            if (p.getHasAlcohol(curStep)>0) {
-                p.setHasAlcohol(p.getHasAlcohol(curStep) - 1);
-                if (p.getHasAlcohol(curStep+1) == 0){
-                    p.setDrinksConsumed(p.getDrinksConsumed(curStep)+1);
+            if (p.getLastHasAlcohol()>0) {
+                p.setNewHasAlcohol(p.getLastHasAlcohol() - 1);
+                if (p.getLastHasAlcohol() == 1){
+                    p.setNewDrinksConsumed(p.getLastDrinksConsumed()+1);
                 } else{
-                    p.setDrinksConsumed(p.getDrinksConsumed(curStep));
+                    p.setNewDrinksConsumed(p.getLastDrinksConsumed());
                 }
             } else{
-                p.setDrinksConsumed(p.getDrinksConsumed(curStep));
-                p.setHasAlcohol(0);
+                p.setNewDrinksConsumed(p.getLastDrinksConsumed());
+                p.setNewHasAlcohol(0);
             }
 
-            p.setHappiness(p.getHappiness(curStep));
+            p.setNewHappiness(p.getLastHappiness());
 
-            p.setMoneyToSpend(p.getMoneyToSpend(curStep));
-            if (curStep%4 == 0){
-                p.setEnergy(Math.max(p.getEnergy(curStep) - 1, 0));
+            p.setNewMoneyToSpend(p.getLastMoneyToSpend());
+            if (lastStep%4 == 0){
+                p.setNewEnergy(Math.max(p.getLastEnergy() - 1, 0));
             } else {
-                p.setEnergy(Math.max(p.getEnergy(curStep), 0));
+                p.setNewEnergy(Math.max(p.getLastEnergy(), 0));
             }
             int drinkChance = random.nextInt(101);
-            int[] bar = main.club.barObjects[0];
-            float x = p.getPosition(curStep)[0]; float y = p.getPosition(curStep)[1];
-            if(p.getHasAlcohol(curStep) == 0 && p.getMoneyToSpend(curStep)>0 &&(drinkChance<p.getLikenessToDrink())&&(x > bar[0] - 30 && x < bar[0] + bar[2] + 30 &&
+            int[] bar = Club.barObjects[0];
+            float x = p.getLastPosition()[0]; float y = p.getLastPosition()[1];
+            if(p.getLastHasAlcohol() == 0 && p.getLastMoneyToSpend()>0 &&(drinkChance<p.getLikenessToDrink())&&(x > bar[0] - 30 && x < bar[0] + bar[2] + 30 &&
                     y > bar[1] - 30 && y < bar[1] + bar[3] + 30)){
-                p.setMoneyToSpend(p.getMoneyToSpend(curStep)-1);
-                p.setHasAlcohol(20);
+                p.setNewMoneyToSpend(p.getLastMoneyToSpend()-1);
+                p.setNewHasAlcohol(20);
             }
-            if (p.getMoneyToSpend(curStep)==5){
+            if (p.getLastMoneyToSpend()==5){
                 p.setLikenessToDrink(15);
             }
-            if (p.getEnergy(curStep)==0){
+            if (p.getLastEnergy()==0){
                 p.setLikenessToDrink(0);
             }
         }
         return crowd;
     }
 
-    void TakeAction (Main main, Person p, float t, int curStep) {
+    void TakeAction (Person p, int curStep) {
         // Determine what type of movement action the person wants to perform
         //SHOULD BE DETERMINED BY ALL OTHER RELATIONS: PLEASE FILL THIS IN
         int goal;
-        if (t < 22 || t > 24)
+        if (Day.time < 22 || Day.time > 24)
             goal = 0; // Dance floor
         else
             goal = 1;
-        MovePerson(main, p, goal, curStep);
+        MovePerson(p, goal, curStep);
     }
 
-    private void MovePerson (Main main, Person p, int goal, int curStep) {
+    private void MovePerson (Person p, int goal, int curStep) {
         float[] target = {0,0};
         float speed = 1.5f;
-        float x = p.getPosition(curStep)[0]; float y = p.getPosition(curStep)[1];
+        float x = p.getLastPosition()[0]; float y = p.getLastPosition()[1];
 
         // Find out where to go given the personal goal
         switch (goal) {
             case 0: // Wants to dance
-                // If already on the dance floot
-                if (x > main.club.barObjects[1][0] - 10 && x < main.club.barObjects[1][0] + main.club.barObjects[1][2] + 10 &&
-                        y > main.club.barObjects[1][1] - 10 && y < main.club.barObjects[1][1] + main.club.barObjects[1][3] + 10) {
+                // If already on the dance floor
+                if (x > Club.barObjects[1][0] - 10 && x < Club.barObjects[1][0] + Club.barObjects[1][2] + 10 &&
+                        y > Club.barObjects[1][1] - 10 && y < Club.barObjects[1][1] + Club.barObjects[1][3] + 10) {
 
                     // There is a chance he/she will choose a next target
                     if (random.nextInt(100) < 10) {
-                        target[0] = main.club.barObjects[1][0] + random.nextInt(main.club.barObjects[1][2]);
-                        target[1] = main.club.barObjects[1][1] + random.nextInt(main.club.barObjects[1][3]);
+                        target[0] = Club.barObjects[1][0] + random.nextInt(Club.barObjects[1][2]);
+                        target[1] = Club.barObjects[1][1] + random.nextInt(Club.barObjects[1][3]);
                         p.setGoalPosition(target);
                     }
                 }
 
                 // If first time
                 if (p.getPrevGoal() != 0) {
-                    target[0] = main.club.barObjects[1][0] + random.nextInt(main.club.barObjects[1][2]);
-                    target[1] = main.club.barObjects[1][1] + random.nextInt(main.club.barObjects[1][3]);
+                    target[0] = Club.barObjects[1][0] + random.nextInt(Club.barObjects[1][2]);
+                    target[1] = Club.barObjects[1][1] + random.nextInt(Club.barObjects[1][3]);
                     p.setGoalPosition(target);
                     p.setPrevGoal(0);
                 }
@@ -93,7 +94,7 @@ public class PersonBehaviour {
 
                 break;
             case 1:
-                int[] bar = main.club.barObjects[0];
+                int[] bar = Club.barObjects[0];
 
                 // If already around the bar
                 if (x > bar[0] - 30 && x < bar[0] + bar[2] + 30 &&
@@ -119,8 +120,8 @@ public class PersonBehaviour {
 
 
         // Determine the movement of the person in this frame
-        x = target[0] - p.getPosition(curStep)[0];
-        y = target[1] - p.getPosition(curStep)[1];
+        x = target[0] - p.getLastPosition()[0];
+        y = target[1] - p.getLastPosition()[1];
 
         // Normalize if vector too big
         double sqrt = Math.sqrt(Math.abs(Math.pow(x,2)) + Math.abs(Math.pow(y,2)));
@@ -130,17 +131,17 @@ public class PersonBehaviour {
         }
 
         // Outer wall collision check + set actual position vector
-        x = Math.min(Math.max(p.getPosition(curStep)[0] + x, 40), 360);
-        y = Math.min(Math.max(p.getPosition(curStep)[1] + y, 40), 360);
+        x = Math.min(Math.max(p.getLastPosition()[0] + x, 40), 360);
+        y = Math.min(Math.max(p.getLastPosition()[1] + y, 40), 360);
 
         //Collision check
-        for (int i = 0; i < main.club.barObjects.length; i++) {
-            if (main.club.barObjects[i][4] == 1 && x > main.club.barObjects[i][0] - 10 && x < main.club.barObjects[i][0] + main.club.barObjects[i][2] + 10 &&
-                    y > main.club.barObjects[i][1] - 10 && y < main.club.barObjects[i][1] + main.club.barObjects[i][3] + 10) {
-                x = p.getPosition(curStep)[0];
-                y = p.getPosition(curStep)[1];
+        for (int i = 0; i < Club.barObjects.length; i++) {
+            if (Club.barObjects[i][4] == 1 && x > Club.barObjects[i][0] - 10 && x < Club.barObjects[i][0] + Club.barObjects[i][2] + 10 &&
+                    y > Club.barObjects[i][1] - 10 && y < Club.barObjects[i][1] + Club.barObjects[i][3] + 10) {
+                x = p.getLastPosition()[0];
+                y = p.getLastPosition()[1];
             }
         }
-        p.setPosition(new float[] {x,y});
+        p.setNewPosition(new float[] {x,y});
     }
 }

@@ -1,41 +1,40 @@
-public class OnLocation {
+public class Day {
 
     private PersonBehaviour pBehaviour = new PersonBehaviour();
-    private Main main;
-    public OnLocation (Main x) {
-        main = x;
+    public Day() {
     }
 
-    private float simulationTime = 2;
-    private float time;
-    private float openTime = 18;
-    private float closeTime = 28; // continue counting after 24
-    private float timeIncrement = 0.00833333333333333f;//1/120: every half minute one frame
-    public int steps = (int)Math.ceil((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
-    public static int curStep = 1;
+    private static float simulationTime = 2;
+    public static float time;
+    private static float openTime = Club.openTime;
+    private static float closeTime = Club.closeTime;
+    private static float timeIncrement = Club.timeIncrement;
+    private static int steps = (int)Math.ceil((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
+    private static int curStep = 1;
+    private static int lastStep = 0;
 
     // Initialize the bar environment, its employees
     public void InitDay () {
         time = openTime;
+        //also initialize all people position[0] here etc;
     }
 
     public int UpdateDay () {
         // Necessary to ignore one step: start of the day has already been defined
         time += timeIncrement;
-
         //TEST VISUALISATION
-        main.frame.Start(main.club, curStep - 1, time);
+        Frame.Start();
 
         // Continue the simulation until closing time
         while (time <= closeTime) {
 
             //TODO: this is the main body of the simulation: any individual or inter-agent logic should be here
-            main.club.crowd[curStep] = pBehaviour.updatePerson(main, main.club.crowd[curStep - 1], curStep - 1, time);
+            Club.crowd[Day.curStep] = pBehaviour.updatePersons(Club.crowd[curStep - 1]);
 
             // Visualisation
-            main.frame.Update(main.club, curStep - 1, time);
-
+            Frame.Update();
             curStep++;
+            lastStep++;
             System.out.println(time);
             time += timeIncrement;
 
@@ -50,7 +49,16 @@ public class OnLocation {
 
     public void RoundUpDay () {
         System.out.println("[TODO] end of simulation!");
-        // Finish the day (send everyone home, prepare final values)
-        main.LogInfo();
+        Main.LogInfo();
+    }
+
+    public static int getSteps() {
+        return steps;
+    }
+    public static int getCurStep() {
+        return curStep;
+    }
+    public static int getLastStep() {
+        return lastStep;
     }
 }
