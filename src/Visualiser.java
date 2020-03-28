@@ -11,7 +11,7 @@ public class Visualiser extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
-        g.drawString(String.format(java.util.Locale.US,"%.2f", Day.time), 30, 40);
+        //g.drawString(String.format(java.util.Locale.US,"%.2f", Day.getTime()), 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
 
@@ -25,28 +25,28 @@ public class Visualiser extends JPanel {
         // FILL BAR
         // Bar table
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(Club.barObjects[0][0],Club.barObjects[0][1],Club.barObjects[0][2],Club.barObjects[0][3]);
+        g.fillRect(Main.clubs.get(0).getBarObjects()[0][0],Main.clubs.get(0).getBarObjects()[0][1],Main.clubs.get(0).getBarObjects()[0][2],Main.clubs.get(0).getBarObjects()[0][3]);
         // Bar stools
         g.setColor(Color.GRAY);
         for (int i = 2; i < 5; i++) {
-            g.fillRect(Club.barObjects[i][0], Club.barObjects[i][1], Club.barObjects[i][2], Club.barObjects[i][3]);
+            g.fillRect(Main.clubs.get(0).getBarObjects()[i][0], Main.clubs.get(0).getBarObjects()[i][1], Main.clubs.get(0).getBarObjects()[i][2], Main.clubs.get(0).getBarObjects()[i][3]);
         }
         // Dance floor
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(Club.barObjects[1][0],Club.barObjects[1][1],Club.barObjects[1][2],Club.barObjects[1][3]);
+        g.fillRect(Main.clubs.get(0).getBarObjects()[1][0],Main.clubs.get(0).getBarObjects()[1][1],Main.clubs.get(0).getBarObjects()[1][2],Main.clubs.get(0).getBarObjects()[1][3]);
 
         g.setColor(Color.RED);
-        for (Person p: Club.crowd[Day.getLastStep()]) {
+        for (Person p: Main.people) {
 
             // Determine Color
-            if (p.getGender() == 0)
+            if (p.getGender() == Gender.MALE)
                 g.setColor(Color.BLUE);
             else
                 g.setColor(Color.PINK);
-            g.fillOval((int)(p.getLastPosition()[0] - 10), (int)(p.getLastPosition()[1] - 10),20,20);
+            g.fillOval((int)(p.getCurrentState().getPosition().getX() - 10), (int)(p.getCurrentState().getPosition().getY()- 10),20,20);
 
-            g.setColor(new Color(10,(int)p.getLastEnergy()/2,10));
-            g.fillOval((int)(p.getLastPosition()[0] - 8), (int)(p.getLastPosition()[1] - 8),16,16);
+            g.setColor(new Color(10,(int)p.getCurrentState().getEnergy()/2,10));
+            g.fillOval((int)(p.getCurrentState().getPosition().getX() - 8), (int)(p.getCurrentState().getPosition().getY() - 8),16,16);
         }
 
     }

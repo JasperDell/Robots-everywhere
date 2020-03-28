@@ -1,64 +1,60 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Day {
+    private static final float timeIncrement = 1/120f;//1/120: every half minute one frame
+    private final float startTime;
+    private final float endTime;
+    private final int sleepTime;
 
     private PersonBehaviour pBehaviour = new PersonBehaviour();
+    private float currentTime;
+
     public Day() {
+        startTime = Main.getFirstOpen();
+        endTime = Main.getLastClose();
+        this.currentTime = startTime;
+        this.sleepTime = 2 * 1000 / ((int)Math.ceil((endTime - startTime) / timeIncrement) + 1);
     }
 
-    private static float simulationTime = 2;
-    public static float time;
-    private static float openTime = Club.openTime;
-    private static float closeTime = Club.closeTime;
-    private static float timeIncrement = Club.timeIncrement;
-    private static int steps = (int)Math.ceil((closeTime - openTime) / timeIncrement) + 1; // + 1 to have data of both start and end
-    private static int curStep = 1;
-    private static int lastStep = 0;
-
-    // Initialize the bar environment, its employees
-    public void InitDay () {
-        time = openTime;
-        //also initialize all people position[0] here etc;
-    }
-
-    public int UpdateDay () {
-        // Necessary to ignore one step: start of the day has already been defined
-        time += timeIncrement;
-        //TEST VISUALISATION
+    public void simulate() {
+        // Initialize visualisation.
+        // TODO: Move to club constructor in case of multiple clubs.
         Frame.Start();
+        while(this.currentTime <= this.endTime) {
+            // Create new states for people and clubs.
+            this.createNewStates();
 
-        // Continue the simulation until closing time
-        while (time <= closeTime) {
+            // Simulate the current time.
+            // TODO: Update club and people.
+            PersonBehaviour.updatePersons();
 
-            //TODO: this is the main body of the simulation: any individual or inter-agent logic should be here
-            Club.crowd[Day.curStep] = pBehaviour.updatePersons(Club.crowd[curStep - 1]);
-
-            // Visualisation
+            // Update visualisation.
             Frame.Update();
-            curStep++;
-            lastStep++;
-            System.out.println(time);
-            time += timeIncrement;
 
-            // Sleep for a short while
-            try { Thread.sleep((int)(simulationTime * 1000 / steps)); }
+            // Sleep for a short while before beginning again.
+            try {
+                Thread.sleep(sleepTime);
+            }
             catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
+
+            // Set next time for simulation.
+            this.currentTime = this.currentTime + timeIncrement;
         }
-        return 0;
-    }
-
-    public void RoundUpDay () {
+        // Ended simulation of day.
         System.out.println("[TODO] end of simulation!");
-        Main.LogInfo();
+        Main.LogInfo(Main.clubs.get(0));
     }
 
-    public static int getSteps() {
-        return steps;
-    }
-    public static int getCurStep() {
-        return curStep;
-    }
-    public static int getLastStep() {
-        return lastStep;
+    private void createNewStates(){
+        for (Person p : Main.people) {
+            p.newState(this.currentTime);
+        }
+
+        for (Club c : Main.clubs) {
+            c.newState(this.currentTime);
+        }
     }
 }

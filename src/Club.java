@@ -1,39 +1,84 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Club {
+    public final float openTime = 18;
+    public final float closeTime = 28; // continue counting after 24
+
     // Bar objects (0-3 are position and size, 4 is collision object: 0=not, 1=collision
-    public static int[] bar = new int[] {20,220,60,160, 1};
-    public static int[][] barStools = {{90, 270, 10, 10, 0},{90, 300, 10, 10, 0}, {90, 330, 10, 10, 0}};
-    public static int[] danceFloor = {150, 100, 200, 150, 0};
-    public static int[][] barObjects = {bar,danceFloor, barStools[0],barStools[1],barStools[2]};
+    //note to do this properly this needs getters as the values of the array can be changed
+    private final int[] bar = new int[] { 20,220,60,160, 1 };
+    private final int[][] barStools = { {90, 270, 10, 10, 0}, {90, 300, 10, 10, 0}, {90, 330, 10, 10, 0} };
+    private final int[] danceFloor = { 150, 100, 200, 150, 0 };
+    public final int[][] barObjects = { bar, danceFloor, barStools[0], barStools[1], barStools[2] };
 
-    public static float openTime = 18;
-    public static float closeTime = 28; // continue counting after 24
-    public static float timeIncrement = 0.00833333333333333f;//1/120: every half minute one frame
-
-    static int[] totalMoneySpend;
-    static int[] numberOfPeople;
-    static int[] numberOfPeopleDancing;
-    static int[] musicVolume;
-    static List<Person>[] crowd;
+    private List<ClubState> states;
+    private ClubState currentState;
 
     public Club() {
-        int steps = Day.getSteps();
-        totalMoneySpend = new int[steps];
-        numberOfPeople = new int[steps];
-        numberOfPeopleDancing = new int[steps];
-        musicVolume  = new int[steps];
-        crowd = new ArrayList[steps];
-        for (int i = 0; i < steps; i++) { crowd[i] = new ArrayList<>(); }
+        this.states = new ArrayList<>();
+        this.newState(0);
     }
 
-    void setTotalMoneySpend(int x, int i){ totalMoneySpend[i] = x; }
-    void updateTotalMoneySpend(int x, int i){ totalMoneySpend[i] += x; }
-    void setNumberOfPeople(int x, int i){ numberOfPeople[i] = x; }
-    void updateNumberOfPeople(int x, int i){ numberOfPeople[i]+=x; }
-    void setNumberOfPeopleDancing(int x, int i){ numberOfPeopleDancing[i] = x; }
-    void updateNumberOfPeopleDancing(int x, int i){ numberOfPeopleDancing[i] += x; }
-    void setMusicVolume(int x, int i){ musicVolume[i] = x; }
-    void updateMusicVolume(int x, int i){ musicVolume[i] += x; }
+    public ClubState newState(float time) {
+        ClubState state;
+        if(this.currentState == null)
+            state = new ClubState(this, time);
+        else
+            state = currentState.clone(time);
+        this.states.add(state);
+        this.currentState = state;
+        return state;
+    }
+
+    public int getMusicVolume() {
+        return this.currentState.getMusicVolume();
+    }
+
+    public void setMusicVolume(int musicVolume) {
+        this.currentState.setMusicVolume(musicVolume);
+    }
+
+    public int getMoneySpendCurrentDay() {
+        return this.currentState.getMoneySpend();
+    }
+
+    public int getNumberOfPeople() {
+        return this.currentState.getNumberOfPeople();
+    }
+    public int getNumberOfPeople(int i) {return this.states.get(i).getNumberOfPeople();}
+
+    public int getNumberOfPeopleDancing() {
+        return this.currentState.getNumberOfPeopleDancing();
+    }
+    public int getNumberOfPeopleDancing(int i) {return this.states.get(i).getNumberOfPeopleDancing();}
+
+    public int getTotalMoneySpend(){
+        int total = 0;
+        for (ClubState state : this.states) {
+            total += state.getMoneySpend();
+        }
+        return total;
+    }
+
+    public int getTotalMoneySpend(int uptillhere){
+        int total = 0;
+        for (int i = 0; i < this.states.size() || i < uptillhere; i++) {
+            ClubState state = states.get(i);
+            total += state.getMoneySpend();
+        }
+        return total;
+    }
+
+    ClubState getCurrentState() {
+        return this.currentState;
+    }
+
+    public int[] getBar() {
+        return bar;
+    }
+
+    public int[][] getBarObjects() {
+        return barObjects;
+    }
 }

@@ -2,8 +2,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Frame {
-
     static JFrame gui;
+
+    private Frame(){
+    }
 
     public static void Start () {
         gui = new JFrame("Club environment");

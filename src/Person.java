@@ -1,78 +1,126 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class Person {
-    final String name;
-    final int index; // All persons have different indexes in order to differentiate them
-    final int gender; // 0>male, 1>female
-    final int steps;
+    private final int id;
+    private final String name;
+    private final Gender gender;
+    private final int alcoholTolerance;
+    private final int danceAffinity;
+    private final int money;
+    private final int initialLikenessToDrink;
+    private final int initialHappiness;
+    private final float initialEnergy;
 
-    int likenessToDrink;
+    private List<PersonState> states;
+    private PersonState currentState;
 
-    float[][] position;
-    int[] moneyToSpend;
-    int[] hasAlcohol;
-    int[] drinksConsumed;
-    int[] alcoholTolerance;
-    int[] happiness;
-    int[] danceAffinity;
-    float[] energy;
-
-    // Calculation variables
-    float[] goalPosition;
-    int prevGoal;
-
-    public Person (int index, int gender, String name) {
-        this.index = index;
+    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy) {
+        this.id = id;
         this.name = name;
         this.gender = gender;
-
-        steps = Day.getSteps();
-        position = new float[steps][2];
-        moneyToSpend = new int[steps];
-        hasAlcohol = new int[steps];
-        drinksConsumed = new int[steps];
-        alcoholTolerance = new int[steps];
-        happiness = new int[steps];
-        danceAffinity = new int[steps];
-        energy = new float[steps];
-        goalPosition = new float[2];
-        prevGoal = -1;
+        this.alcoholTolerance = alcoholTolerance;
+        this.danceAffinity = danceAffinity;
+        this.money = money;
+        this.states = new ArrayList<>();
+        this.initialLikenessToDrink = initalLikenessToDrink;
+        this.initialHappiness = initialHappiness;
+        this.initialEnergy = initialEnergy;
+        this.newState(0);
     }
 
-    String getName () { return name; }
-    int getIndex () {return index; }
-    int getGender() {return gender; }
-    void setLikenessToDrink(int x) {likenessToDrink = x;}
-    int arrayPointer = 0;
+    public String getName() {
+        return name;
+    }
 
-    public void setNewPosition(float[] x) { position[Day.getCurStep()] = x; }
-    public float[] getLastPosition(){return position[Day.getLastStep()]; }
-    public float[] getPosition(int i){return position[i]; }
+    public int getId() {
+        return id;
+    }
 
-    public void setNewMoneyToSpend(int x){ moneyToSpend[Day.getCurStep()] = x; }
-    int getLastMoneyToSpend(){ return moneyToSpend[Day.getLastStep()]; }
-    void addToNewMoneyToSpend(int x){ moneyToSpend[Day.getCurStep()]+=x; }
+    public Gender getGender() {
+        return gender;
+    }
 
-    int getLikenessToDrink(){return likenessToDrink;}
+    public int getAlcoholTolerance() {
+        return alcoholTolerance;
+    }
 
-    void setNewHasAlcohol(int x){ hasAlcohol[Day.getCurStep()] = x; }
-    int getLastHasAlcohol(){ return hasAlcohol[Day.getLastStep()]; }
+    public int getDanceAffinity() {
+        return danceAffinity;
+    }
 
-    void addToNewDrinksConsumed(int x){ drinksConsumed[Day.getCurStep()] +=x; }
-    void setNewDrinksConsumed(int x){drinksConsumed[Day.getCurStep()] = x;}
-    int getLastDrinksConsumed(){ return drinksConsumed[Day.getLastStep()]; }
+    public int getMoney() {
+        return money;
+    }
 
-    void setNewAlcoholTolerance(int x){ alcoholTolerance[Day.getCurStep()] = x; }
+    public PersonState getCurrentState() {
+        return currentState;
+    }
 
-    void setNewHappiness(int x){ happiness[Day.getCurStep()] = x; }
-    int getLastHappiness(){return happiness[Day.getLastStep()];}
+    public PersonState newState(float time) {
+        PersonState state;
+        if(this.currentState == null) {
+            //Initialize new state based on initial unchanging values
+            state = new PersonState(this, time);
+            state.setPosition(new Position());
+            state.setGoalPosition(new Position());
+            //private int moneySpend => default 0
+            state.setLikenessToDrink(initialLikenessToDrink);
+            //private int amountOfAlcohol => default 0
+            //private int drinksConsumed => default 0
+            state.setHappiness(initialHappiness);
+            state.setEnergy(initialEnergy);
+            //private boolean isDancing=> default 0
+        }
+        else {
+            state = currentState.clone(time);
+        }
+        this.states.add(state);
+        this.currentState = state;
+        return state;
+    }
 
+    public PersonState getStateForTime(float time) {
+        for (PersonState state : states) {
+            if(state.getTime() == time)
+                return state;
+        }
+        return null;
+    }
 
-    void setDanceAffinity(int x){ danceAffinity[Day.getCurStep()] = x; }
+    public void enterClub(Club club) {
+        club.getCurrentState().enter(this);
+        currentState.setHasJoinedClubThisState(true);
+        //TODO: make sure position gets set to entrance club
+    }
 
-    void setNewEnergy(float x){ energy[Day.getCurStep()] = x; }
-    float getLastEnergy() { return energy[Day.getLastStep()]; }
+    public void leaveClub(Club club) {
+        club.getCurrentState().leave(this);
+        currentState.setHasLeftClubThisState(true);
+    }
 
-    public void setGoalPosition(float[] x) { goalPosition = x; }
-    public float[] getGoalPosition(){return goalPosition; }
-    public void setPrevGoal(int x) { prevGoal = x; }
-    public int getPrevGoal() { return prevGoal; }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // self check
+        if (this == obj)
+            return true;
+        // null check
+        if (obj == null)
+            return false;
+        // type check and cast
+        if (getClass() != obj.getClass())
+            return false;
+        Person person = (Person) obj;
+        return this.id == person.id;
+    }
+
+    public List<PersonState> getStates(){
+        return states;
+    }
 }

@@ -9,142 +9,152 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
-    Random random = new Random();
+    public static final Random random = new Random();
+    public static List<Day> days = new ArrayList<>();
+    public static List<Person> people = new ArrayList<>();
+    public static List<Club> clubs = new ArrayList<>();
 
-    public Club club;
-    public Day location;
-    public Frame frame;
-    //public Visualiser vis;
-    private Names names;
-
-    private int startCrowd = 10;
-
-    void main (){
-        // Initialize the club and the location
-        location = new Day();
-        location.InitDay();
-        club = new Club();
-        frame = new Frame();
-        //vis = new Visualiser();
-        names = new Names();
-
-        // Initialize x persons to start the day with
-        initializeCrowd(startCrowd);
-
-        //[DEBUG] print the total money of the entire starting crowd
-        printSpendableMoney(club.crowd[0]);
-
-        // Start the simulation: time will progress over the day
-        int dummy = location.UpdateDay();
-
-        // End the simulation and collect the results
-        location.RoundUpDay();
+    private Main(){
     }
 
-    void initializeCrowd(int startCrowd){
-        // For now, no groups: init all patrons separately
-        for (int i = 0; i < startCrowd; i++) {
-            int index =  club.crowd[0].size();
-            int gender = random.nextInt(2);
-            String name = names.names[gender][random.nextInt(names.names[gender].length)];
+    public static float getFirstOpen() {
+        float min = Float.MAX_VALUE;
+        for (Club club : clubs) {
+            if (club.openTime < min)
+                min = club.openTime;
+        }
+        return min;
+    }
 
-            Person person = new Person(index, gender, name);
+    public static float getLastClose() {
+        float max = Float.MIN_VALUE;
+        for (Club club : clubs) {
+            if (club.closeTime > max)
+                max = club.closeTime;
+        }
+        return max;
+    }
+
+    public static void main(String[] args) {
+        initialize();
+        LogPeopleToTerminal();
+
+        for (Day day : days) {
+            day.simulate();
+        }
+    }
+
+    private static void initialize() {
+        initializePeople(10);
+        initializeClubs();
+        initializeDays();
+
+        // Let all people enter the club.
+        Club club = clubs.get(0);
+        for (Person p : people) {
+            p.enterClub(club);
+        }
+    }
+
+    private static void initializePeople(int amount){
+        for (int i = 0; i < amount; i++) {
+            int index =  people.size();
+            Gender gender;
+            String name;
+            if(random.nextBoolean()) {
+                gender = Gender.MALE;
+                name = Names.male[random.nextInt(Names.male.length)];
+            } else {
+                gender = Gender.FEMALE;
+                name = Names.female[random.nextInt(Names.female.length)];
+            }
 
             // Set person starting values
-            person.setNewMoneyToSpend(random.nextInt(20)); //are there really people with no money?
+            int initialAlcoholTolerance = (6+random.nextInt(10)); //alcoholtolerance in units alcohol -> base this on research
+            int danceAffinity = random.nextInt(20);
+            int initialMoney = (random.nextInt(20)); //are there really people with no money?
+            int initialLikenessToDrink= (70); // value between 0 and 100
+            int initialHappiness = (50 + random.nextInt(26)); // value between 50 and 75
             int energy = 160 + random.nextInt(241);
-            person.setNewEnergy(energy); // value between 160 and 400
-            person.setNewHappiness(50 + random.nextInt(26)); // value between 50 and 75
-            person.setLikenessToDrink(70); // value between 0 and 100
-            person.setNewHasAlcohol(0);
-            person.setNewDrinksConsumed(0);
-
-            //person.setPosition(new int[] {random.nextInt(360)  + 40, random.nextInt(360) + 40});
-            person.setNewPosition(new float[] {190 + random.nextInt(20), 360});
-
-            // Finally, add person to the club crowd
-            club.crowd[0].add(person);
+            float[] initialPosition = (new float[] {190 + random.nextInt(20), 360});
+            //int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy
+            Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy);
+            people.add(person);
         }
-        LogCrowdTerminal();
     }
 
-    void printSpendableMoney(List<Person> crowd){
+    private static void initializeClubs(){
+        clubs.add(new Club());
+    }
+
+    private static void initializeDays(){
+        days.add(new Day());
+    }
+
+    private static void initializationDebug(Club club){
+        //[DEBUG] print the total money of the entire starting crowd
+        printSpendableMoney(people);
+    }
+
+    static void printSpendableMoney(List<Person> crowd){
         int totalMoney = 0;
         for (Person person: crowd){
-            totalMoney+=person.getLastMoneyToSpend();
+            totalMoney+=person.getMoney();
         }
         System.out.println("--------------------------------------");
         System.out.println("Total patron money: " + totalMoney);
         System.out.println("--------------------------------------");
     }
 
-    public static void LogCrowdTerminal () {
-        for (Person person : Club.crowd[Day.getLastStep()]) {
+    public static void LogPeopleToTerminal () {
+        for (Person person : people) {
             System.out.println("--------------------------------------");
-            if (Day.getLastStep() == 1) { // First time this person is inside the club
-                System.out.println("(" + person.getIndex() + ") " + person.getName() + " joined the club!");
-            } else if (Day.getLastStep() == Day.getLastStep()) { // Club closed or person leaves the club
-                System.out.println("(" + person.index + ") " + person.getName() + " left the club!");
+            if (person.getCurrentState().isHasJoinedClubThisState()) { // First time this person is inside the club
+                System.out.println("(" + person.getId() + ") " + person.getName() + " joined the club!");
+            } else if (person.getCurrentState().isHasLeftClubThisState()) { // person leaves the club
+                System.out.println("(" + person.getId() + ") " + person.getName() + " left the club!");
             } else { // Person remains inside club
-                System.out.println("(" + person.index + ") " + person.getName());
+                System.out.println("(" + person.getId() + ") " + person.getName());
             }
             System.out.print("Gender: ");
-            if (person.getGender() == 0) {System.out.println("Male"); } else {System.out.println("Female"); }
-            System.out.println("Position: [" + person.getLastPosition()[0] + "," + person.getLastPosition()[1] + "]");
-            System.out.println("Money: " + person.getLastMoneyToSpend());
-            System.out.println("Energy: " + person.getLastEnergy());
-            System.out.println("Drinks consumed: " + person.getLastDrinksConsumed());
+            if (person.getGender() == Gender.MALE)
+                System.out.println("Male");
+            else
+                System.out.println("Female");
+            System.out.println("Position: [" + person.getCurrentState().getPosition().getX() + "," + person.getCurrentState().getPosition().getY() + "]");
+            System.out.println("Money: " + person.getCurrentState().getSpendableMoney());
+            System.out.println("Energy: " + person.getCurrentState().getEnergy());
+            System.out.println("Drinks consumed: " + person.getCurrentState().getDrinksConsumed());
         }
     }
 
-    public static void LogInfo () {
-        LogCrowdTerminal();
+    public static void LogInfo (Club club) {
+        LogPeopleToTerminal();
         // TODO prepare data for MATLAB
-        //float[] x = new float[location.steps];
-        //float[] y = new float[location.steps];
-        //int k = club.crowd[0].size();
-        //int[] test = club.totalMoneySpend;
-        //System.out.println(Integer.toString(test[1200]));
-
         //for position
         try {
             FileWriter writer = new FileWriter("Position.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             float x = 0;
             float y = 0;
-            for(int k = 0; k<Club.crowd[0].size(); k++) {
+            for(int k = 0; k < people.size(); k++) {
                 bufferedWriter.write('X' + Integer.toString(k));
                 bufferedWriter.write(" ");
                 bufferedWriter.write('Y' + Integer.toString(k));
                 bufferedWriter.write(" ");
             }
 
-            for(int i = 0; i < Day.getLastStep(); i++) {
+            for(int i = 0; i < people.get(0).getStates().size(); i++) { //go trough all states
                 bufferedWriter.newLine();
-                for (int k = 0; k<Club.crowd[0].size(); k++) {
-                    //System.out.println(club.crowd[i].get(0).getEnergy(i));
-                    x = Club.crowd[0].get(k).getPosition(i)[0];
-                    y = Club.crowd[0].get(k).getPosition(i)[1];
+                for (int k = 0; k < people.size(); k++) {//go trough all people in those states
+
+                    x = people.get(k).getStates().get(i).getPosition().getX();
+                    y = people.get(k).getStates().get(i).getPosition().getY();
                     bufferedWriter.write(Float.toString(x));
                     bufferedWriter.write(" ");
                     bufferedWriter.write(Float.toString(y));
                     bufferedWriter.write(" ");
-
-                    //x[i] = club.crowd[0].get(k).getPosition(i)[0];
-                    //y[i] = club.crowd[0].get(k).getPosition(i)[1];
                 }
-/*
-                for (int j = 0; j < x.length; j++) {
-                    b = x[j];
-                    bufferedWriter.write(Float.toString(b));
-                    //if (i < (a.length - 1)) {
-                    bufferedWriter.write(" ");
-                    //}
-                    b = y[j];
-                    bufferedWriter.write(Float.toString(b));
-                    bufferedWriter.newLine();
-                    //bufferedWriter.write("See You Again!");
-                }*/
             }
 
             bufferedWriter.close();
@@ -168,16 +178,16 @@ public class Main {
             bufferedWriter.write("People_dancing"); //numberOfPeopleDancing
             bufferedWriter.write(" ");
             //}
-            for(int i = 0; i < Day.getLastStep(); i++) {
-                put = Club.totalMoneySpend[i];
+            for(int i = 0; i < people.get(0).getStates().size(); i++) {
+                put = club.getTotalMoneySpend(i);
                 bufferedWriter.newLine();
                 bufferedWriter.write(Integer.toString(put));
 
-                put = Club.numberOfPeople[i];
+                put = club.getNumberOfPeople(i);
                 bufferedWriter.write(" ");
                 bufferedWriter.write(Integer.toString(put));
 
-                put = Club.numberOfPeopleDancing[i];
+                put = club.getNumberOfPeopleDancing(i);
                 bufferedWriter.write(" ");
                 bufferedWriter.write(Integer.toString(put));
             }
@@ -191,14 +201,14 @@ public class Main {
             FileWriter writer = new FileWriter("Happiness.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             int put = 0;
-            for(int k = 0; k<Club.crowd[0].size(); k++) {
-                bufferedWriter.write("Happiness" + Integer.toString(k));
+            for(int k = 0; k<people.size(); k++) {
+                bufferedWriter.write("Happiness" + k);
                 bufferedWriter.write(" ");
             }
-            for(int i = 0; i < Day.getLastStep(); i++) {
+            for(int i = 0; i < people.get(0).getStates().size(); i++) { //go trough all states
                 bufferedWriter.newLine();
-                for (int k = 0; k<Club.crowd[0].size(); k++) {
-                    put = Club.crowd[0].get(k).happiness[i];
+                for (int k = 0; k<people.size(); k++) { //go trough all people
+                    put = people.get(k).getStates().get(i).getHappiness();
                     bufferedWriter.write(Integer.toString(put));
                     bufferedWriter.write(" ");
                 }
@@ -213,14 +223,14 @@ public class Main {
             FileWriter writer = new FileWriter("energy.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             float put = 0;
-            for(int k = 0; k<Club.crowd[0].size(); k++) {
+            for(int k = 0; k<people.size(); k++) {//go trough all people
                 bufferedWriter.write("energy" + Integer.toString(k));
                 bufferedWriter.write(" ");
             }
-            for(int i = 0; i < Day.getLastStep(); i++) {
+            for(int i = 0; i < people.get(0).getStates().size(); i++) {//go trough all states
                 bufferedWriter.newLine();
-                for (int k = 0; k<Club.crowd[0].size(); k++) {
-                    put = Club.crowd[0].get(k).energy[i];
+                for (int k = 0; k<people.size(); k++) {//go trough all people
+                    put = people.get(k).getStates().get(i).getEnergy();
                     bufferedWriter.write(Float.toString(put));
                     bufferedWriter.write(" ");
                 }
@@ -235,14 +245,14 @@ public class Main {
             FileWriter writer = new FileWriter("drinksConsumed.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             int put = 0;
-            for(int k = 0; k<Club.crowd[0].size(); k++) {
+            for(int k = 0; k<people.size(); k++) {
                 bufferedWriter.write("drinksConsumed" + Integer.toString(k));
                 bufferedWriter.write(" ");
             }
-            for(int i = 0; i < Day.getLastStep(); i++) {
+            for(int i = 0; i < people.get(0).getStates().size(); i++) {
                 bufferedWriter.newLine();
-                for (int k = 0; k<Club.crowd[0].size(); k++) {
-                    put = Club.crowd[0].get(k).drinksConsumed[i];
+                for (int k = 0; k<people.size(); k++) {
+                    put = people.get(k).getStates().get(i).getDrinksConsumed();
                     bufferedWriter.write(Integer.toString(put));
                     bufferedWriter.write(" ");
                 }
@@ -251,10 +261,5 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         } //end drinksConsumed
-    }
-
-
-    public static void main(String[] args) {
-        (new Main()).main();
     }
 }
