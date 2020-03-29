@@ -14,12 +14,12 @@ public class Person {
     private final int money;
     private final int initialLikenessToDrink;
     private final int initialHappiness;
-    private final float initialEnergy;
+    private final int initialEnergy;
 
     private List<PersonState> states;
     private PersonState currentState;
 
-    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy) {
+    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, int initialEnergy) {
         this.id = id;
         this.name = name;
         this.gender = gender;

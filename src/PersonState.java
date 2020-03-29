@@ -1,3 +1,6 @@
+import java.rmi.MarshalException;
+import java.util.*;
+
 public class PersonState {
     //anything added to this should also be added to clone()!!
     //if it isn't in clone than it doesn't get remembered by the person in the next state !!
@@ -11,7 +14,7 @@ public class PersonState {
     private int amountOfAlcohol;
     private int drinksConsumed;
     private int happiness;
-    private float energy;
+    private int energy;
     private boolean isDancing;
     private boolean hasJoinedClubThisState;
     private boolean hasLeftClubThisState;
@@ -90,15 +93,15 @@ public class PersonState {
         this.happiness = happiness;
     }
 
-    public float getEnergy() {
-        return energy;
+    public int getEnergy() {
+        return Math.max(energy, 0);
     }
 
-    public void setEnergy(float energy) {
+    public void setEnergy(int energy) {
         this.energy = energy;
     }
 
-    public void addToEnergy(float energy) {
+    public void addToEnergy(int energy) {
         this.energy += energy;
     }
 

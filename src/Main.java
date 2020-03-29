@@ -79,7 +79,7 @@ public class Main {
             int initialMoney = (random.nextInt(20)); //are there really people with no money?
             int initialLikenessToDrink= (70); // value between 0 and 100
             int initialHappiness = (50 + random.nextInt(26)); // value between 50 and 75
-            int energy = 160 + random.nextInt(241);
+            int energy = 20000 + random.nextInt(20001);
             float[] initialPosition = (new float[] {190 + random.nextInt(20), 360});
             //int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy
             Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy);
