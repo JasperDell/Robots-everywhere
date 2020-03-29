@@ -13,7 +13,10 @@ public class Visualiser extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
-        g.drawString(String.format(java.util.Locale.US,"%.2f", day.currentTime), 30, 40);
+        int hours = (int) (day.currentTime); //rounds down
+        float afterComma = (day.currentTime %1); //get everything after comma
+        int minutes = (int) (afterComma * 60f);
+        g.drawString(hours + "h " + minutes+"m", 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
 

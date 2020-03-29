@@ -2,6 +2,8 @@
 public class Day {
     //make sure to use timeIncrement when change personState,
     //so whatever happens depends on the 'simulation time' instead of actual time
+
+    //amount of frames per hour of simulation time
     public static final float timeIncrementInHours = 1/(60*60f);//every second
     private final float startTime;
     private final float endTime;
