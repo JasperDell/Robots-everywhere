@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+//a person does not change over time,
+//instead it can set the initial values of its state
+//and it keeps track of how that state changes over time
 public class Person {
     private final int id;
     private final String name;

@@ -3,7 +3,9 @@ import javax.swing.*;
 
 public class Visualiser extends JPanel {
 
-    public Visualiser() {
+    Day day;
+    public Visualiser(Day day) {
+        this.day = day;
         setBackground(Color.WHITE);
     }
 
@@ -11,7 +13,7 @@ public class Visualiser extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
-        //g.drawString(String.format(java.util.Locale.US,"%.2f", Day.getTime()), 30, 40);
+        g.drawString(String.format(java.util.Locale.US,"%.2f", day.currentTime), 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
 

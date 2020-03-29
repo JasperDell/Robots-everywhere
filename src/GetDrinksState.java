@@ -1,39 +1,43 @@
 public class GetDrinksState extends State {
+    /////////
+    //singleton stuff
+    ////////
     private static GetDrinksState instance;
     private GetDrinksState(){};
-
     public static GetDrinksState getInstance() {
         if (instance == null)
             instance = new GetDrinksState();
         return instance;
     }
 
+    ///////
+    //actual implementation
+    ///////
     @Override
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
 
-        //being at the bar with no alcohol allows one to buy alcohol
-        if(isAtTargetBarObject(ps.getPosition(), 3) && !ps.hasAlcohol()){
-            System.out.println(ps.getPerson().getName()+ "buying a drink" );
+        //being at the bar with no alcohol and with money allows one to buy alcohol
+        if(isAtTargetBarObject(ps.getPosition(), 3) && !ps.hasAlcohol() && ps.getSpendableMoney() >0){
+            System.out.println(ps.getPerson().getName()+ " buying a drink");
             ps.buyNewDrink(1, 7);
+            System.out.println(ps.getPerson().getName()+ " has "+ps.getSpendableMoney()+ " money");
         }
     }
 
     @Override
     public void moveNextState(PersonState ps) {
-        if (ps.hasAlcohol()){
+        if (ps.hasAlcohol() || ps.getSpendableMoney() <= 0){
             ps.setState(DancingState.getInstance());
         } else {
             ps.setState(this);
         }
-
     }
 
     @Override
     public void setGoalPosition(PersonState ps) {
         //goal position is not at bar
-        //possibly this will make people walk into the bar, in that case check for position at targetPosition
         if(!isAtTargetBarObject(ps.getGoalPosition(), 1)){
             int[] bar = getTargetBarObject();
             Position target = new Position();

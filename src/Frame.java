@@ -7,17 +7,17 @@ public class Frame {
     private Frame(){
     }
 
-    public static void Start () {
+    public static void Start (Day day) {
         gui = new JFrame("Club environment");
         gui.setSize(600, 500);
-        Visualiser panel = new Visualiser();
+        Visualiser panel = new Visualiser(day);
         Container pane = gui.getContentPane();
         pane.add(panel);
         gui.setVisible(true);
     }
 
-    public static void Update () {
-        Visualiser panel = new Visualiser();
+    public static void Update (Day day) {
+        Visualiser panel = new Visualiser(day);
         Container pane = gui.getContentPane();
         pane.add(panel);
         gui.setVisible(true);

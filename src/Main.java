@@ -15,6 +15,29 @@ public class Main {
     public static List<Club> clubs = new ArrayList<>();
 
     private Main(){
+        //private constructor so no instances can be made.
+    }
+
+    public static void main(String[] args) {
+        initialize();
+        LogPeopleToTerminal();
+
+        for (Day day : days) {
+            day.simulate();
+        }
+    }
+
+    private static void initialize() {
+        initializePeople(10);
+        initializeClubs();
+        initializeDays();
+
+        // Let all people enter the club.
+        //todo create 'enter' state for people, so they can add themselves to the club
+        Club club = clubs.get(0);
+        for (Person p : people) {
+            p.enterClub(club);
+        }
     }
 
     public static float getFirstOpen() {
@@ -35,26 +58,7 @@ public class Main {
         return max;
     }
 
-    public static void main(String[] args) {
-        initialize();
-        LogPeopleToTerminal();
 
-        for (Day day : days) {
-            day.simulate();
-        }
-    }
-
-    private static void initialize() {
-        initializePeople(10);
-        initializeClubs();
-        initializeDays();
-
-        // Let all people enter the club.
-        Club club = clubs.get(0);
-        for (Person p : people) {
-            p.enterClub(club);
-        }
-    }
 
     private static void initializePeople(int amount){
         for (int i = 0; i < amount; i++) {

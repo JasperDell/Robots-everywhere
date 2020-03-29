@@ -1,36 +1,42 @@
-import java.util.ArrayList;
-import java.util.List;
-
+//Day keeps track of the time and runs the simulation
 public class Day {
-    private static final float timeIncrement = 1/120f;//1/120: every half minute one frame
+    //make sure to use timeIncrement when change personState,
+    //so whatever happens depends on the 'simulation time' instead of actual time
+    public static final float timeIncrementInHours = 1/(60*60f);//how many hours per increment: every second
     private final float startTime;
     private final float endTime;
     private final int sleepTime;
 
     private PersonBehaviour pBehaviour = new PersonBehaviour();
-    private float currentTime;
+    public float currentTime;
 
     public Day() {
         startTime = Main.getFirstOpen();
         endTime = Main.getLastClose();
         this.currentTime = startTime;
-        this.sleepTime = 2 * 1000 / ((int)Math.ceil((endTime - startTime) / timeIncrement) + 1);
+        //two seconds / (simDuration / half minute per frame)
+        //actual duration = simduration/increment * timeperframe
+        int simulationDuration = 60 * 1000;//60 seconds
+
+        this.sleepTime = (int) ((simulationDuration * timeIncrementInHours) / (endTime - startTime));//2 * 1000  / ((int)Math.ceil((endTime - startTime) / timeIncrement) + 1);
     }
 
     public void simulate() {
         // Initialize visualisation.
-        // TODO: Move to club constructor in case of multiple clubs.
-        Frame.Start();
+        // TODO: If implementing multiple clubs, the club should hold the frame.
+        Frame.Start(this);
         while(this.currentTime <= this.endTime) {
             // Create new states for people and clubs.
+            //Persons and clubs keep track of all the states they have been in
+            //in the form of a 'person/club state' class
             this.createNewStates();
 
             // Simulate the current time.
-            // TODO: Update club and people.
+            // TODO: Update clubs
             PersonBehaviour.updatePersons();
 
             // Update visualisation.
-            Frame.Update();
+            Frame.Update(this);
 
             // Sleep for a short while before beginning again.
             try {
@@ -41,7 +47,7 @@ public class Day {
             }
 
             // Set next time for simulation.
-            this.currentTime = this.currentTime + timeIncrement;
+            this.currentTime = this.currentTime + timeIncrementInHours;
         }
         // Ended simulation of day.
         System.out.println("[TODO] end of simulation!");

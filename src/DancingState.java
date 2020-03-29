@@ -1,22 +1,31 @@
 public class DancingState extends State {
+    /////////
+    //singleton stuff
+    ////////
     private static DancingState instance;
     private DancingState(){};
-
     public static DancingState getInstance() {
         if (instance == null)
             instance = new DancingState();
         return instance;
     }
 
+    ///////
+    //actual implementation
+    ///////
     @Override
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-        //ps.addToEnergy(-1);//every two minutes of dancing take 1 energy
+        //ps.addToEnergy(-1);
 
         //if we have alcohol and are at the dancefloor
-        if (ps.hasAlcohol() && ps.getPosition().equals(ps.getGoalPosition())) {
+        float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(float)(60*4); //every quarter minute
+        boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
+        boolean notwalking = ps.getPosition().equals(ps.getGoalPosition());
+        if (canTakeNextSip && ps.hasAlcohol() && notwalking) {
             ps.takeSip();
+            ps.setLastSipTime(ps.getTime());
         }
     }
 

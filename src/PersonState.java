@@ -1,4 +1,6 @@
 public class PersonState {
+    //anything added to this should also be added to clone()!!
+    //if it isn't in clone than it doesn't get remembered by the person in the next state !!
     private final Person person;
     private final float time;
 
@@ -14,11 +16,13 @@ public class PersonState {
     private boolean hasJoinedClubThisState;
     private boolean hasLeftClubThisState;
     private State state;
+    private float lastSipTime;
+
 
     public PersonState(Person person, float time) {
          this.person = person;
          this.time = time;
-         //make enterstate
+         //make enter state, put person in enter state per default
          this.state = DancingState.getInstance();
      }
 
@@ -132,6 +136,7 @@ public class PersonState {
          ps.energy = this.energy;
          ps.isDancing = this.isDancing;
          ps.state = this.state;
+         ps.lastSipTime = this.lastSipTime;
          return ps;
     }
 
@@ -157,5 +162,13 @@ public class PersonState {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public float getLastSipTime() {
+        return lastSipTime;
+    }
+
+    public void setLastSipTime(float lastSipTime) {
+        this.lastSipTime = lastSipTime;
     }
 }

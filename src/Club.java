@@ -1,9 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
+//see Person, for how this all works
+//same idea just for the club
+//you can currently just get to the club with Main.clubs.get(0)
+//that should be changed if we for some reason decide to implement multiple clubs
 
 public class Club {
     public final float openTime = 18;
     public final float closeTime = 28; // continue counting after 24
+
 
     // Bar objects (0-3 are position and size, 4 is collision object: 0=not, 1=collision
     //note to do this properly this needs getters as the values of the array can be changed

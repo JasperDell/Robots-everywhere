@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+//see PersonState for how all of this works
+//same idea but then for clubs
 public class ClubState {
     private final Club club;
     private final float time;

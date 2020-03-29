@@ -1,24 +1,36 @@
+//any behavioural state should implement this State
+//and be made into a singleton so we don't have an enormous amount of instances of every state
+//make sure to use Day.timeIncrementInHours when implementing anything time sensitive
 public abstract class State {
-    //functions any State needs to implement;
+    //this gets called every time step on every person
     public void updatePerson(PersonState ps){
         takeAction(ps);
         moveNextState(ps);
     };
-
+    ////////////////////
+    //functions any State needs to implement:
+    ///////////////////
     //put here all that person does in the state (move, set vars)
     public abstract void takeAction(PersonState ps);
 
     //put here logic of state transitions
     public abstract void moveNextState(PersonState ps);
 
-    //needed for implemented helpers
+    ////////////////////////
+    //needed for the implemented helpers:
+    ////////////////////////////
+    //use ps.setgoalposition so you can use moveToGoalPosition in 'takeAction'
     public abstract void setGoalPosition(PersonState ps);
 
+    //return the associated barobject so "isAtTargetBarObject" works
     public abstract int[] getTargetBarObject();
 
-    //implemented helpers
+    ////////////////////
+    //the implemented helpers:
+    ////////////////////
     protected void moveToGoalPosition(PersonState ps){
-        moveToGoalPosition(ps, 1.5f);
+        float speed = 2160 * Day.timeIncrementInHours;
+        moveToGoalPosition(ps, speed);
     }
 
     protected void moveToGoalPosition (PersonState ps, float speed){
