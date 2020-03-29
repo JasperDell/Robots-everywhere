@@ -17,8 +17,7 @@ public class DancingState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-      //  ps.addToEnergy(-2); make float
-
+        ps.addToEnergy(-(1f/36000f));
         //if we have alcohol and are at the dancefloor
         float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(float)(60*4); //every quarter minute
         boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
@@ -39,9 +38,9 @@ public class DancingState extends State {
             likelinessToGoGrabADrink += Main.random.nextInt(40);
 
             //if low on energy also make that a reason  to get a drink
- //           if (ps.getEnergy() < Main.random.nextInt(10)) { //if energy at least lower than 10
-  //              likelinessToGoGrabADrink += 10 - ps.getEnergy();
- //           }
+            if (ps.getEnergy() < ((float) Main.random.nextInt(10))/100) { //if energy at least lower than 10
+               likelinessToGoGrabADrink += 10 - ps.getEnergy()*100;
+            }
         }
 
         //note if likeliness is 0, then chance is also 0, if likeliness is 100 then chance is also 100
