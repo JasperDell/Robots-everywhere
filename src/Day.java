@@ -2,7 +2,7 @@
 public class Day {
     //make sure to use timeIncrement when change personState,
     //so whatever happens depends on the 'simulation time' instead of actual time
-    public static final float timeIncrementInHours = 1/(2*60f);//every half hour
+    public static final float timeIncrementInHours = 1/(60*60f);//every second
     private final float startTime;
     private final float endTime;
     private final int sleepTime;
@@ -14,7 +14,7 @@ public class Day {
         startTime = Main.getFirstOpen();
         endTime = Main.getLastClose();
         this.currentTime = startTime;
-        int simulationDuration = 60 * 1000;//60 seconds
+        int simulationDuration = 10 * 60 * 1000;//10 minutes
         this.sleepTime = (int) ((simulationDuration * timeIncrementInHours) / (endTime - startTime));//2 * 1000  / ((int)Math.ceil((endTime - startTime) / timeIncrement) + 1);
     }
 

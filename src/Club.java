@@ -12,6 +12,8 @@ public class Club {
 
     // Bar objects (0-3 are position and size, 4 is collision object: 0=not, 1=collision
     //note to do this properly this needs getters as the values of the array can be changed
+    //0,1 is position 2,3 is sizex, sizey
+    //1 unit is 3cm
     public final int[] bar = new int[] { 20,220,60,160, 1 };
     public final int[][] barStools = { {90, 270, 10, 10, 0}, {90, 300, 10, 10, 0}, {90, 330, 10, 10, 0} };
     public final int[] danceFloor = { 150, 100, 200, 150, 0 };

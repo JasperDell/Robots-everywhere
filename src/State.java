@@ -29,7 +29,9 @@ public abstract class State {
     //the implemented helpers:
     ////////////////////
     protected void moveToGoalPosition(PersonState ps){
-        float speed = 2160 * Day.timeIncrementInHours;
+        //speed is units movement per timestep allowed
+        //1 unit is 3 cm one timeStep is Day.timeIncrementInHours long
+        float speed = (4f * 1000f)/0.03f * Day.timeIncrementInHours; //4km/h
         moveToGoalPosition(ps, speed);
     }
 
