@@ -13,7 +13,11 @@ public class Visualiser extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
-        g.drawString(String.format(java.util.Locale.US,"%.2f", day.currentTime), 30, 40);
+        int a = (int)day.currentTime;
+        float b = day.currentTime - (float) a;
+        float c = (b/100f)*59f;
+        float d = (float)a + c;
+        g.drawString(String.format(java.util.Locale.US,"%.2f", d), 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
 
