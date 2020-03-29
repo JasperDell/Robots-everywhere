@@ -14,7 +14,7 @@ public class PersonState {
     private int amountOfAlcohol;
     private int drinksConsumed;
     private int happiness;
-    private int energy;
+    private float energy;
     private boolean isDancing;
     private boolean hasJoinedClubThisState;
     private boolean hasLeftClubThisState;
@@ -93,15 +93,17 @@ public class PersonState {
         this.happiness = happiness;
     }
 
-    public int getEnergy() {
-        return Math.max(energy, 0);
+    public float getEnergy() {
+        if (energy<0){
+            return 0;
+        } else return energy;
     }
 
-    public void setEnergy(int energy) {
+    public void setEnergy(float energy) {
         this.energy = energy;
     }
 
-    public void addToEnergy(int energy) {
+    public void addToEnergy(float energy) {
         this.energy += energy;
     }
 
