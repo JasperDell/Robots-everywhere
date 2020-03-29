@@ -51,7 +51,7 @@ public class Visualiser extends JPanel {
                 g.setColor(Color.PINK);
             g.fillOval((int)(p.getCurrentState().getPosition().getX() - 10), (int)(p.getCurrentState().getPosition().getY()- 10),20,20);
             //System.out.println(p.getCurrentState().getEnergy()*255);
-            g.setColor(new Color(10,(int)p.getCurrentState().getEnergy()*255,10));
+            g.setColor(new Color(10,(int)(p.getCurrentState().getEnergy()*255),10));
             g.fillOval((int)(p.getCurrentState().getPosition().getX() - 8), (int)(p.getCurrentState().getPosition().getY() - 8),16,16);
         }
 
