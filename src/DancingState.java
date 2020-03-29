@@ -17,8 +17,9 @@ public class DancingState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-        ps.addToEnergy(-(1f/36000f));
-        //if we have alcohol and are at the dance floor
+        System.out.println(ps.getEnergy());
+        ps.addToEnergy((-(Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
+        //if we have alcohol and are at the dancefloor
         float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(ps.getPerson().getSipsPerHour()); //every quarter minute
         boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
         boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());

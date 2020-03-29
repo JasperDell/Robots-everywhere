@@ -14,9 +14,13 @@ public class Visualiser extends JPanel {
 
         g.setColor(Color.BLACK);
         int hours = (int) (day.currentTime); //rounds down
-        float afterComma = (day.currentTime -hours); //get everything after comma
+        float afterComma = (day.currentTime %1); //get everything after comma
         int minutes = (int) (afterComma * 60f);
-        g.drawString(hours + "h " + minutes+"m", 30, 40);
+        String minutesString;
+        if (minutes<10){
+            minutesString = "0" + Integer.toString(minutes);
+        } else minutesString = Integer.toString(minutes);
+        g.drawString(hours + "h " + minutesString+"m", 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
 
@@ -50,7 +54,7 @@ public class Visualiser extends JPanel {
                 g.setColor(Color.PINK);
             g.fillOval((int)(p.getCurrentState().getPosition().getX() - 10), (int)(p.getCurrentState().getPosition().getY()- 10),20,20);
             //System.out.println(p.getCurrentState().getEnergy()*255);
-            g.setColor(new Color(10,(int)p.getCurrentState().getEnergy()*255,10));
+            g.setColor(new Color(10,(int)(p.getCurrentState().getEnergy()*255),10));
             g.fillOval((int)(p.getCurrentState().getPosition().getX() - 8), (int)(p.getCurrentState().getPosition().getY() - 8),16,16);
         }
 
