@@ -7,9 +7,9 @@ public class Club {
 
     // Bar objects (0-3 are position and size, 4 is collision object: 0=not, 1=collision
     //note to do this properly this needs getters as the values of the array can be changed
-    private final int[] bar = new int[] { 20,220,60,160, 1 };
-    private final int[][] barStools = { {90, 270, 10, 10, 0}, {90, 300, 10, 10, 0}, {90, 330, 10, 10, 0} };
-    private final int[] danceFloor = { 150, 100, 200, 150, 0 };
+    public final int[] bar = new int[] { 20,220,60,160, 1 };
+    public final int[][] barStools = { {90, 270, 10, 10, 0}, {90, 300, 10, 10, 0}, {90, 330, 10, 10, 0} };
+    public final int[] danceFloor = { 150, 100, 200, 150, 0 };
     public final int[][] barObjects = { bar, danceFloor, barStools[0], barStools[1], barStools[2] };
 
     private List<ClubState> states;

@@ -12,6 +12,9 @@ public class Position {
         this.y = y;
     }
 
+    public boolean equals(Position otherPosition) {
+        return (this.x == otherPosition.x && this.y == otherPosition.y);
+    }
 
     public Position(float[] pos){
         this.x = pos[0];
@@ -26,12 +29,20 @@ public class Position {
         this.x = x;
     }
 
+    public void addToX(float x) {
+        this.x += x;
+    }
+
     public float getY() {
         return y;
     }
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public void addToY(float y) {
+        this.y += y;
     }
 
     @Override

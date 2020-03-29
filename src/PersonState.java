@@ -13,10 +13,13 @@ public class PersonState {
     private boolean isDancing;
     private boolean hasJoinedClubThisState;
     private boolean hasLeftClubThisState;
+    private State state;
 
     public PersonState(Person person, float time) {
          this.person = person;
          this.time = time;
+         //make enterstate
+         this.state = DancingState.getInstance();
      }
 
     public Person getPerson() {
@@ -63,8 +66,8 @@ public class PersonState {
         return amountOfAlcohol;
     }
 
-    public void buyNewDrink(int drinkCost){
-        this.amountOfAlcohol = amountOfAlcohol;
+    public void buyNewDrink(int drinkCost, int sipsOfAlcohol){
+        this.amountOfAlcohol += sipsOfAlcohol;
         addMoneySpend(drinkCost);
     }
 
@@ -89,6 +92,10 @@ public class PersonState {
 
     public void setEnergy(float energy) {
         this.energy = energy;
+    }
+
+    public void addToEnergy(float energy) {
+        this.energy += energy;
     }
 
     public boolean isDancing() {
@@ -118,8 +125,14 @@ public class PersonState {
          ps.position = this.position.clone();
          ps.goalPosition = this.goalPosition.clone();
          ps.moneySpend = this.moneySpend;
-         //TODO: afmaken
-        return ps;
+         ps.likenessToDrink = this.likenessToDrink;
+         ps.amountOfAlcohol = this.amountOfAlcohol;
+         ps.drinksConsumed = this.drinksConsumed;
+         ps.happiness = this.happiness;
+         ps.energy = this.energy;
+         ps.isDancing = this.isDancing;
+         ps.state = this.state;
+         return ps;
     }
 
     public boolean isHasJoinedClubThisState() {
@@ -136,5 +149,13 @@ public class PersonState {
 
     public void setHasLeftClubThisState(boolean hasLeftClubThisState) {
         this.hasLeftClubThisState = hasLeftClubThisState;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }

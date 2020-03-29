@@ -5,6 +5,9 @@ public class PersonBehaviour {
 
     public static void updatePersons() {
         for(Person p : Main.people) {
+            State state = p.getCurrentState().getState();
+            state.updatePerson(p.getCurrentState());
+            /*
             PersonState ps = p.getCurrentState();
             TakeAction(p);
             if (ps.hasAlcohol()) {
@@ -28,9 +31,11 @@ public class PersonBehaviour {
             if (ps.getEnergy()==0){
                 ps.setLikenessToDrink(0);
             }
+
+             */
         }
     }
-
+/*
     static void TakeAction(Person p) {
         // Determine what type of movement action the person wants to perform
         //SHOULD BE DETERMINED BY ALL OTHER RELATIONS: PLEASE FILL THIS IN
@@ -48,7 +53,6 @@ public class PersonBehaviour {
         PersonState ps =p.getCurrentState();
         float x = ps.getPosition().getX(); float y = ps.getPosition().getY();
         float targetx = ps.getGoalPosition().getX(); float targety = ps.getGoalPosition().getY();
-        System.out.println(targetx + " " + targety);
         // Find out where to go given the personal goal
         switch (goal) {
             case 0: // Wants to dance
@@ -83,7 +87,7 @@ public class PersonBehaviour {
 
         // Normalize if vector too big
         double sqrt = Math.sqrt(Math.abs(Math.pow(x,2)) + Math.abs(Math.pow(y,2)));
-        if (sqrt > 1) {
+        if (sqrt > speed) {
             x = Math.round(x / sqrt) * speed;
             y = Math.round(y / sqrt) * speed;
         }
@@ -102,4 +106,6 @@ public class PersonBehaviour {
         }
         ps.setPosition(new Position(x,y));
     }
+
+ */
 }

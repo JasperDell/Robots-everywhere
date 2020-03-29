@@ -1,59 +1,66 @@
 public abstract class State {
-
     //functions any State needs to implement;
-    public abstract void updatePerson();
-    public abstract void takeAction();
-    public abstract void moveNextState();
+    public void updatePerson(PersonState ps){
+        takeAction(ps);
+        moveNextState(ps);
+    };
 
-    //functions every State will need
-    /*protected float[] nextPersonLocation (Person p, float[] target){
-        float speed = 1.5f;
+    //put here all that person does in the state (move, set vars)
+    public abstract void takeAction(PersonState ps);
+
+    //put here logic of state transitions
+    public abstract void moveNextState(PersonState ps);
+
+    //needed for implemented helpers
+    public abstract void setGoalPosition(PersonState ps);
+
+    public abstract int[] getTargetBarObject();
+
+    //implemented helpers
+    protected void moveToGoalPosition(PersonState ps){
+        moveToGoalPosition(ps, 1.5f);
+    }
+
+    protected void moveToGoalPosition (PersonState ps, float speed){
+        Position target = ps.getGoalPosition().clone();
 
         //calculate movement vector
+        float x = target.getX() - ps.getPosition().getX();
+        float y = target.getY() - ps.getPosition().getY();
 
-        float x = p.getPosition()[0] - target[0];
-        float y = p.getPosition()[1] - target[1];
-
-        //make vector only as big as speed allows //is that what this does?
-        double distance = Math.sqrt(Math.abs(Math.pow(x,2)) + Math.abs(Math.pow(y,2)));
-        if (distance > speed) {
-            x = Math.round(x / distance) * speed;
-            y = Math.round(y / distance) * speed;
+        // Normalize if vector too big
+        double sqrt = Math.sqrt(Math.abs(Math.pow(x,2)) + Math.abs(Math.pow(y,2)));
+        if (sqrt > speed) {
+            x = Math.round(x / sqrt) * speed;
+            y = Math.round(y / sqrt) * speed;
         }
 
-        //adjust target position to max speed + Outer wall collision check
-        target[0] = Math.min(Math.max(p.getPosition()[0] + x, 40), 360);
-        target[1] = Math.min(Math.max(p.getPosition()[1] + y, 40), 360);
+        // Outer wall collision check + set actual position vector
+        x = Math.min(Math.max(ps.getPosition().getX() + x, 40), 360);
+        y = Math.min(Math.max(ps.getPosition().getY() + y, 40), 360);
 
-        //Collision check , wait do we just not move if we colide with a barobject?
-        for (int i = 0; i < Club.barObjects.length; i++) {
-            if (Club.barObjects[i][4] == 1 && target[0] > Club.barObjects[i][0] - 10 && target[0] < Club.barObjects[i][0] + Club.barObjects[i][2] + 10 &&
-                    target[1] > Club.barObjects[i][1] - 10 && target[1] < Club.barObjects[i][1] + Club.barObjects[i][3] + 10) {
-                target[0] = p.getPosition()[0];
-                target[1]= p.getPosition()[1];
+        //Collision check, however no pathfinding so we cannot deal with collisions anyways
+        /*for (int i = 0; i < Main.clubs.get(0).getBarObjects().length; i++) {
+            if (Main.clubs.get(0).getBarObjects()[i][4] == 1 && x > Main.clubs.get(0).getBarObjects()[i][0] - 10 && x < Main.clubs.get(0).getBarObjects()[i][0] + Main.clubs.get(0).getBarObjects()[i][2] + 10 &&
+                    y > Main.clubs.get(0).getBarObjects()[i][1] - 10 && y < Main.clubs.get(0).getBarObjects()[i][1] + Main.clubs.get(0).getBarObjects()[i][3] + 10) {
+                x = ps.getPosition().getX();
+                y = ps.getPosition().getY();
             }
-        }
-        return new float[] {target[0],target[1]};
-    }*/
-
-    /*protected float[] determineTarget(int[] barobject){
-        //todo implement;
-
+        }*/
+        ps.setPosition(new Position(x,y));
     }
 
     //use default range when not specified
-    //note that even if true, then we still need to set the position.
-    protected boolean isAtTarget(Person person, float[] target){
-        return isAtTarget(person, target, 10);
+    protected boolean isAtTarget(PersonState ps){
+        return ps.getPosition().equals(ps.getGoalPosition());
     }
 
-    protected boolean isAtTarget(Person person, float[] target, int range) {
-        float x= person.getPosition()[0];
-        float y = person.getPosition()[1];
-        if (x > target[0] - range && x < target[0] + range &&
-                y > target[1] - range && y < target[1] + range) {
-            return true;
-        }
-        return false;
-    }*/
+    protected boolean isAtTargetBarObject(Position p, int range){
+        float x = p.getX();
+        float y = p.getY();
+        int[] barObject = getTargetBarObject();
+
+        return (x > barObject[0] - range && x < barObject[0] + barObject[2] + range &&
+                y > barObject[1] - range && y < barObject[1] + barObject[3] + range);
+    }
 }
