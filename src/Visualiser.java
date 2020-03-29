@@ -13,11 +13,14 @@ public class Visualiser extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
-        int a = (int)day.currentTime;
-        float b = day.currentTime - (float) a;
-        float c = (b/100f)*59f;
-        float d = (float)a + c;
-        g.drawString(String.format(java.util.Locale.US,"%.2f", d), 30, 40);
+        int hours = (int) (day.currentTime); //rounds down
+        float afterComma = (day.currentTime %1); //get everything after comma
+        int minutes = (int) (afterComma * 60f);
+        String minutesString;
+        if (minutes<10){
+            minutesString = "0" + Integer.toString(minutes);
+        } else minutesString = Integer.toString(minutes);
+        g.drawString(hours + "h " + minutesString+"m", 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
 
