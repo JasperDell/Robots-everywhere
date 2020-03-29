@@ -14,7 +14,7 @@ public class Visualiser extends JPanel {
 
         g.setColor(Color.BLACK);
         int hours = (int) (day.currentTime); //rounds down
-        float afterComma = (day.currentTime %1); //get everything after comma
+        float afterComma = (day.currentTime -hours); //get everything after comma
         int minutes = (int) (afterComma * 60f);
         g.drawString(hours + "h " + minutes+"m", 30, 40);
         g.setColor(Color.RED);

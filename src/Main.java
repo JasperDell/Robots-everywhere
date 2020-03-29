@@ -81,8 +81,9 @@ public class Main {
             int initialHappiness = (50 + random.nextInt(26)); // value between 50 and 75
             float energy = 1f;
             float[] initialPosition = (new float[] {190 + random.nextInt(20), 360});
+            int sipsPerHour = random.nextInt(53) +7;//at least seven sips per hour, max a sip per minute
             //int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy
-            Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy);
+            Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy, sipsPerHour);
             people.add(person);
         }
     }
