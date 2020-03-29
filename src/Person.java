@@ -71,10 +71,8 @@ public class Person {
             state.setPosition(new Position());
             state.setGoalPosition(new Position());
             //private int moneySpend => default 0
-            state.setLikenessToDrink(initialLikenessToDrink);
             //private int amountOfAlcohol => default 0
             //private int drinksConsumed => default 0
-            state.setHappiness(initialHappiness);
             state.setEnergy(initialEnergy);
             //private boolean isDancing=> default 0
         }
@@ -96,13 +94,11 @@ public class Person {
 
     public void enterClub(Club club) {
         club.getCurrentState().enter(this);
-        currentState.setHasJoinedClubThisState(true);
         //TODO: make sure position gets set to entrance club
     }
 
     public void leaveClub(Club club) {
         club.getCurrentState().leave(this);
-        currentState.setHasLeftClubThisState(true);
     }
 
     @Override

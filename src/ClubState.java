@@ -39,7 +39,7 @@ public class ClubState {
     public int getNumberOfPeopleDancing() {
         int total = 0;
         for(Person person : this.crowd) {
-            if(person.getStateForTime(time).isDancing())
+            if(person.getStateForTime(time).getState() instanceof DancingState)
                 total++;
         }
         return total;

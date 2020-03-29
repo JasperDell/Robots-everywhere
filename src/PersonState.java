@@ -2,25 +2,21 @@ import java.rmi.MarshalException;
 import java.util.*;
 
 public class PersonState {
+    //!!!
     //anything added to this should also be added to clone()!!
     //if it isn't in clone than it doesn't get remembered by the person in the next state !!
-    private final Person person;
-    private final float time;
-
-    private Position position;
+    //!!!
+    private final Person person; //associated (unchanging) person
+    private final float time; //the timestamp of this state
+    private Position position; //one unit is 3cm
     private Position goalPosition;
     private int moneySpend;
-    private int likenessToDrink;
-    private int amountOfAlcohol;
-    private int drinksConsumed;
-    private int happiness;
-    private float energy;
-    private boolean isDancing;
-    private boolean hasJoinedClubThisState;
-    private boolean hasLeftClubThisState;
-    private State state;
-    private float lastSipTime;
-    private float drinkPouringTimeLeft;
+    private int amountOfAlcohol; //sips of alcohol in hand
+    private int drinksConsumed; //units alcohol finished
+    private float energy; //abstract representation energy -> between 1 and 0;
+    private State state; //the state this person is in.
+    private float lastSipTime; //last timestamp this person took a sip
+    private float drinkPouringTimeLeft; //time this person has to wait for their drink
 
 
     public PersonState(Person person, float time) {
@@ -30,6 +26,60 @@ public class PersonState {
          this.state = DancingState.getInstance();
      }
 
+    public PersonState clone(float time){
+        PersonState ps = new PersonState(this.person, time);
+        ps.position = this.position.clone();
+        ps.goalPosition = this.goalPosition.clone();
+        ps.moneySpend = this.moneySpend;
+        ps.amountOfAlcohol = this.amountOfAlcohol;
+        ps.drinksConsumed = this.drinksConsumed;
+        ps.energy = this.energy;
+        ps.state = this.state;
+        ps.lastSipTime = this.lastSipTime;
+        ps.drinkPouringTimeLeft = this.drinkPouringTimeLeft;
+        return ps;
+    }
+
+    ////////////
+    /////some less intuitive getters and setters
+    /////////////
+    public void buyNewDrink(int drinkCost, int sipsOfAlcohol){
+        this.amountOfAlcohol += sipsOfAlcohol;
+        addMoneySpend(drinkCost);
+    }
+
+    public void takeSip() {
+        this.amountOfAlcohol--;
+        if(!this.hasAlcohol())
+            drinksConsumed++;
+    }
+
+    public float getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(float energy) {
+        if(energy >1){
+            this.energy = 1;
+        } else if (energy < 0){
+            this.energy = 0;
+        } else {
+            this.energy = energy;
+        }
+    }
+
+    public void addToEnergy(float energy) {
+        this.energy += energy;
+        if(this.energy >1){
+            this.energy = 1;
+        } else if (this.energy < 0){
+            this.energy = 0;
+        }
+    }
+
+    ////////////
+    /////from here on just normal getters, setters and addTos
+    /////////////
     public Person getPerson() {
         return person;
     }
@@ -62,105 +112,16 @@ public class PersonState {
         this.moneySpend += moneySpend;
     }
 
-    public int getLikenessToDrink() {
-        return likenessToDrink;
-    }
-
-    public void setLikenessToDrink(int likenessToDrink) {
-        this.likenessToDrink = likenessToDrink;
-    }
-
-    public int getAmountOfAlcohol() {
-        return amountOfAlcohol;
-    }
-
-    public void buyNewDrink(int drinkCost, int sipsOfAlcohol){
-        this.amountOfAlcohol += sipsOfAlcohol;
-        addMoneySpend(drinkCost);
-    }
-
     public int getDrinksConsumed() {
         return drinksConsumed;
-    }
-    public void incrementDrinksConsumed() {
-        drinksConsumed++;
-    }
-
-    public int getHappiness() {
-        return happiness;
-    }
-
-    public void setHappiness(int happiness) {
-        this.happiness = happiness;
-    }
-
-    public float getEnergy() {
-        if (energy<0){
-            return 0;
-        } else return energy;
-    }
-
-    public void setEnergy(float energy) {
-        this.energy = energy;
-    }
-
-    public void addToEnergy(float energy) {
-        this.energy += energy;
-    }
-
-    public boolean isDancing() {
-        return isDancing;
-    }
-
-    public void setDancing(boolean dancing) {
-        isDancing = dancing;
     }
 
     public boolean hasAlcohol() {
          return amountOfAlcohol > 0;
     }
 
-    public void takeSip() {
-         this.amountOfAlcohol--;
-         if(!this.hasAlcohol())
-             drinksConsumed++;
-    }
-
     public int getSpendableMoney() {
         return this.person.getMoney() - this.moneySpend;
-    }
-
-    public PersonState clone(float time){
-         PersonState ps = new PersonState(this.person, time);
-         ps.position = this.position.clone();
-         ps.goalPosition = this.goalPosition.clone();
-         ps.moneySpend = this.moneySpend;
-         ps.likenessToDrink = this.likenessToDrink;
-         ps.amountOfAlcohol = this.amountOfAlcohol;
-         ps.drinksConsumed = this.drinksConsumed;
-         ps.happiness = this.happiness;
-         ps.energy = this.energy;
-         ps.isDancing = this.isDancing;
-         ps.state = this.state;
-         ps.lastSipTime = this.lastSipTime;
-         ps.drinkPouringTimeLeft = this.drinkPouringTimeLeft;
-         return ps;
-    }
-
-    public boolean isHasJoinedClubThisState() {
-        return hasJoinedClubThisState;
-    }
-
-    public void setHasJoinedClubThisState(boolean hasJoinedClubThisState) {
-        this.hasJoinedClubThisState = hasJoinedClubThisState;
-    }
-
-    public boolean isHasLeftClubThisState() {
-        return hasLeftClubThisState;
-    }
-
-    public void setHasLeftClubThisState(boolean hasLeftClubThisState) {
-        this.hasLeftClubThisState = hasLeftClubThisState;
     }
 
     public State getState() {

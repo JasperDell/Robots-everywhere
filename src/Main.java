@@ -114,13 +114,14 @@ public class Main {
     public static void LogPeopleToTerminal () {
         for (Person person : people) {
             System.out.println("--------------------------------------");
-            if (person.getCurrentState().isHasJoinedClubThisState()) { // First time this person is inside the club
+            //hasjoinedclubthisstate will be determined by states later on
+           /* if (person.getCurrentState().isHasJoinedClubThisState()) { // First time this person is inside the club
                 System.out.println("(" + person.getId() + ") " + person.getName() + " joined the club!");
             } else if (person.getCurrentState().isHasLeftClubThisState()) { // person leaves the club
                 System.out.println("(" + person.getId() + ") " + person.getName() + " left the club!");
-            } else { // Person remains inside club
+            } else { */// Person remains inside club
                 System.out.println("(" + person.getId() + ") " + person.getName());
-            }
+            //}
             System.out.print("Gender: ");
             if (person.getGender() == Gender.MALE)
                 System.out.println("Male");
@@ -201,8 +202,10 @@ public class Main {
             e.printStackTrace();
         } // end club
 
-        //for happiness
-        try {
+
+
+        //for happiness, happiness not yet implemented
+        /*try {
             FileWriter writer = new FileWriter("Happiness.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             int put = 0;
@@ -222,6 +225,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         } //end happiness
+        */
 
         //for energy
         try {
