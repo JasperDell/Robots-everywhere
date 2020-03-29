@@ -20,7 +20,7 @@ public class DancingState extends State {
         System.out.println(ps.getEnergy());
         ps.addToEnergy((-(Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
         //if we have alcohol and are at the dancefloor
-        float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(float)(60*4); //every quarter minute
+        float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(ps.getPerson().getSipsPerHour()); //every quarter minute
         boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
         boolean notwalking = ps.getPosition().equals(ps.getGoalPosition());
         if (canTakeNextSip && ps.hasAlcohol() && notwalking) {
