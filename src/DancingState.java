@@ -18,11 +18,11 @@ public class DancingState extends State {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
         ps.addToEnergy(-(1f/36000f));
-        //if we have alcohol and are at the dancefloor
+        //if we have alcohol and are at the dance floor
         float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(ps.getPerson().getSipsPerHour()); //every quarter minute
         boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
-        boolean notwalking = ps.getPosition().equals(ps.getGoalPosition());
-        if (canTakeNextSip && ps.hasAlcohol() && notwalking) {
+        boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());
+        if (canTakeNextSip && ps.hasAlcohol() && notWalking) {
             ps.takeSip();
             ps.setLastSipTime(ps.getTime());
         }
@@ -46,7 +46,7 @@ public class DancingState extends State {
         //note if likeliness is 0, then chance is also 0, if likeliness is 100 then chance is also 100
         if(likelinessToGoGrabADrink > Main.random.nextInt(100)){
             //set Nextstate to be drinking!!!
-            ps.setState(GetDrinksState.getInstance());
+            ps.setState(GoToBarState.getInstance());
         } else {
             //set Nextstate to be dancing !!!
             ps.setState(this);

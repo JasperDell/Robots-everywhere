@@ -1,12 +1,12 @@
-public class GetDrinksState extends State {
+public class GoToBarState extends State {
     /////////
     //singleton stuff
     ////////
-    private static GetDrinksState instance;
-    private GetDrinksState(){};
-    public static GetDrinksState getInstance() {
+    private static GoToBarState instance;
+    private GoToBarState(){};
+    public static GoToBarState getInstance() {
         if (instance == null)
-            instance = new GetDrinksState();
+            instance = new GoToBarState();
         return instance;
     }
 
@@ -17,18 +17,17 @@ public class GetDrinksState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-
-        //being at the bar with no alcohol and with money allows one to buy alcohol
-        if(isAtTargetBarObject(ps.getPosition(), 3) && !ps.hasAlcohol() && ps.getSpendableMoney() >0){
-            System.out.println(ps.getPerson().getName()+ " buying a drink");
-            ps.buyNewDrink(1, 7);
-            System.out.println(ps.getPerson().getName()+ " has "+ps.getSpendableMoney()+ " money");
-        }
     }
 
     @Override
     public void moveNextState(PersonState ps) {
-        if (ps.hasAlcohol() || ps.getSpendableMoney() <= 0){
+        //being at the bar with no alcohol and with money allows one to buy alcohol
+        if(isAtTargetBarObject(ps.getPosition(), 3) && !ps.hasAlcohol() && ps.getSpendableMoney() >0){
+            float minutesOfPouring = Main.random.nextInt(3)+1;
+            ps.setDrinkPouringTimeLeft(minutesOfPouring / 60f);//time is in hours
+            ps.setState(WaitForDrinkState.getInstance());
+        //still having alcohol or having no money means you shouldn't go to bar
+        } else if (ps.hasAlcohol() || ps.getSpendableMoney() <= 0){
             ps.setState(DancingState.getInstance());
         } else {
             ps.setState(this);

@@ -20,6 +20,7 @@ public class PersonState {
     private boolean hasLeftClubThisState;
     private State state;
     private float lastSipTime;
+    private float drinkPouringTimeLeft;
 
 
     public PersonState(Person person, float time) {
@@ -142,6 +143,7 @@ public class PersonState {
          ps.isDancing = this.isDancing;
          ps.state = this.state;
          ps.lastSipTime = this.lastSipTime;
+         ps.drinkPouringTimeLeft = this.drinkPouringTimeLeft;
          return ps;
     }
 
@@ -175,5 +177,17 @@ public class PersonState {
 
     public void setLastSipTime(float lastSipTime) {
         this.lastSipTime = lastSipTime;
+    }
+
+    public float getDrinkPouringTimeLeft() {
+        return drinkPouringTimeLeft;
+    }
+
+    public void addToDrinkPouringTimeLeft(float drinkPouringTimeLeft) {
+        this.drinkPouringTimeLeft += drinkPouringTimeLeft;
+    }
+
+    public void setDrinkPouringTimeLeft(float drinkPouringTimeLeft) {
+        this.drinkPouringTimeLeft = drinkPouringTimeLeft;
     }
 }
