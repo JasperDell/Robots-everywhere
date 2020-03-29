@@ -2,7 +2,7 @@
 public class Day {
     //make sure to use timeIncrement when change personState,
     //so whatever happens depends on the 'simulation time' instead of actual time
-    public static final float timeIncrementInHours = 1/(60*60f);//how many hours per increment: every second
+    public static final float timeIncrementInHours = 1/(2*60f);//every half hour
     private final float startTime;
     private final float endTime;
     private final int sleepTime;
@@ -14,10 +14,7 @@ public class Day {
         startTime = Main.getFirstOpen();
         endTime = Main.getLastClose();
         this.currentTime = startTime;
-        //two seconds / (simDuration / half minute per frame)
-        //actual duration = simduration/increment * timeperframe
         int simulationDuration = 60 * 1000;//60 seconds
-
         this.sleepTime = (int) ((simulationDuration * timeIncrementInHours) / (endTime - startTime));//2 * 1000  / ((int)Math.ceil((endTime - startTime) / timeIncrement) + 1);
     }
 
@@ -26,6 +23,8 @@ public class Day {
         // TODO: If implementing multiple clubs, the club should hold the frame.
         Frame.Start(this);
         while(this.currentTime <= this.endTime) {
+
+            long startCalculationTime = System.currentTimeMillis();
             // Create new states for people and clubs.
             //Persons and clubs keep track of all the states they have been in
             //in the form of a 'person/club state' class
@@ -38,9 +37,12 @@ public class Day {
             // Update visualisation.
             Frame.Update(this);
 
+
+            long endCalculationTime = System.currentTimeMillis();
             // Sleep for a short while before beginning again.
             try {
-                Thread.sleep(sleepTime);
+                int calculationDuration = (int)(endCalculationTime -startCalculationTime);
+                Thread.sleep(Math.max(0, sleepTime - calculationDuration));
             }
             catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
