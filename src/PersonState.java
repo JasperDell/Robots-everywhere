@@ -80,12 +80,7 @@ public class PersonState {
     }
 
     public void addToEnergy(float energy) {
-        this.energy += energy;
-        if(this.energy >1){
-            this.energy = 1;
-        } else if (this.energy < 0){
-            this.energy = 0;
-        }
+        this.energy = Math.min(1f, Math.max(this.energy+energy, 0f));
     }
 
     ////////////
