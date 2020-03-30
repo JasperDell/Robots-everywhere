@@ -23,7 +23,7 @@ public class PersonState {
          this.person = person;
          this.time = time;
          //make enter state, put person in enter state per default
-         this.state = DancingState.getInstance();
+         this.state = OutsideState.getInstance();
      }
 
     public PersonState clone(float time){

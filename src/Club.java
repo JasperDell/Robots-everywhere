@@ -17,6 +17,7 @@ public class Club {
     public final int[] bar = new int[] { 20,220,60,160, 1 };
     public final int[][] barStools = { {90, 270, 10, 10, 0}, {90, 300, 10, 10, 0}, {90, 330, 10, 10, 0} };
     public final int[] danceFloor = { 150, 100, 200, 150, 0 };
+    public final int[] entrance = {20,20,20,20,0};
     public final int[][] barObjects = { bar, danceFloor, barStools[0], barStools[1], barStools[2] };
 
     private List<ClubState> states;

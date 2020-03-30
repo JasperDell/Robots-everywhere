@@ -23,7 +23,6 @@ public class Day {
         // TODO: If implementing multiple clubs, the club should hold the frame.
         Frame.Start(this);
         while(this.currentTime <= this.endTime) {
-
             long startCalculationTime = System.currentTimeMillis();
             // Create new states for people and clubs.
             //Persons and clubs keep track of all the states they have been in

@@ -46,6 +46,7 @@ public class ClubState {
     }
 
     public void enter(Person person) {
+        person.getCurrentState().setPosition(new Position(club.entrance[0], club.entrance[1]));
         this.crowd.add(person);
     }
 
