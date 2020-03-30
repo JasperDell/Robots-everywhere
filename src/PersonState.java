@@ -43,6 +43,17 @@ public class PersonState {
     ////////////
     /////some less intuitive getters and setters
     /////////////
+    public boolean isWantingToBeAtClub(){
+        if (drinksConsumed > person.getAlcoholTolerance()){
+            return false;
+        }
+        if(energy <= 0){
+            return false;
+        }
+        //include happiness when implemented
+        return true;
+    }
+
     public void buyNewDrink(int drinkCost, int sipsOfAlcohol){
         this.amountOfAlcohol += sipsOfAlcohol;
         addMoneySpend(drinkCost);

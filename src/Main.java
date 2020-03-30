@@ -28,8 +28,8 @@ public class Main {
     }
 
     private static void initialize() {
-        initializePeople(10);
         initializeClubs();
+        initializePeople(10);
         initializeDays();
 
         // Let all people enter the club.
@@ -83,7 +83,9 @@ public class Main {
             float[] initialPosition = (new float[] {190 + random.nextInt(20), 360});
             int sipsPerHour = random.nextInt(53) +7;//at least seven sips per hour, max a sip per minute
             //int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy
-            Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy, sipsPerHour);
+            float arrivalTime = clubs.get(0).openTime + random.nextFloat() * (clubs.get(0).closeTime - clubs.get(0).openTime- 2f);//arrive somewhere between opening and 2 hours before close
+            System.out.println("arrivaltime "+arrivalTime);
+            Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy, sipsPerHour, arrivalTime);
             people.add(person);
         }
     }

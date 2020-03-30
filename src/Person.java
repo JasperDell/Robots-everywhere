@@ -16,11 +16,12 @@ public class Person {
     private final int initialHappiness;
     private final float initialEnergy;
     private final int sipsPerHour;
+    private final float arrivalTime;
 
     private List<PersonState> states;
     private PersonState currentState;
 
-    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy, int sipsPerHour) {
+    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy, int sipsPerHour, float arrivalTime) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -32,6 +33,7 @@ public class Person {
         this.initialHappiness = initialHappiness;
         this.initialEnergy = initialEnergy;
         this.sipsPerHour = sipsPerHour;
+        this.arrivalTime = arrivalTime;
         this.newState(0);
     }
 
@@ -127,5 +129,9 @@ public class Person {
 
     public int getSipsPerHour() {
         return sipsPerHour;
+    }
+
+    public float getArrivalTime() {
+        return arrivalTime;
     }
 }

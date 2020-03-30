@@ -24,11 +24,14 @@ public class OutsideState extends State {
     public void moveNextState(PersonState ps) {
         //if time is big enough to enter the club, enter the club
         //todo make this boolean based on the variables
-        boolean enterClub = true;
-        if(enterClub){
+
+        if(ps.isWantingToBeAtClub() && ps.getPerson().getArrivalTime() <= Main.days.get(0).currentTime){
+            System.out.println("arrived at: "+ps.getPerson().getArrivalTime() + " and its now " + Main.days.get(0).currentTime);
             ps.setPosition(new Position (getTargetBarObject()[0], getTargetBarObject()[1])); //put em at the entrance
             ps.getPerson().enterClub(Main.clubs.get(0));
             ps.setState(DancingState.getInstance());
+        } else {
+            ps.setState(this);
         }
     }
 
