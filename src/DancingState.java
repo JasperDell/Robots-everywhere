@@ -30,6 +30,11 @@ public class DancingState extends State {
 
     @Override
     public void moveNextState(PersonState ps) {
+        if (!ps.isWantingToBeAtClub()){
+            ps.setState(OutsideState.getInstance());
+            return;
+        }
+
         int likelinessToGoGrabADrink = 0;//out of 100
         //if has no alcohol and has money, then create a chance to go get a drink
         if (!ps.hasAlcohol() && ps.getSpendableMoney() > 0) {
