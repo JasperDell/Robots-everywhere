@@ -20,6 +20,12 @@ public class Visualiser extends JPanel {
         if (minutes<10){
             minutesString = "0" + Integer.toString(minutes);
         } else minutesString = Integer.toString(minutes);
+        String hoursString;
+        if (9 < hours && hours < 24){
+            hoursString = Integer.toString(hours);
+        } else {
+            hoursString = "0" + Integer.toString(hours%24);
+        }
         g.drawString(hours + "h " + minutesString+"m", 30, 40);
         g.setColor(Color.RED);
         g.drawString(" :You will never escape this barren landscape", 80, 40);
