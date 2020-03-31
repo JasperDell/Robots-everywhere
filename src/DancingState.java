@@ -17,7 +17,7 @@ public class DancingState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-        ps.addToEnergy((-(Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
+        ps.addToEnergy(4*(-(Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
         //if we have alcohol and are at the dancefloor
         float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(ps.getPerson().getSipsPerHour()); //every quarter minute
         boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
@@ -35,28 +35,30 @@ public class DancingState extends State {
             return;
         }
 
-        int likelinessToGoGrabADrink = 0;//out of 100
-        //if has no alcohol and has money, then create a chance to go get a drink
-        if (!ps.hasAlcohol() && ps.getSpendableMoney() > 0) {
-            //if has no alcohol average of 70 percent chance to go get drinks
-            likelinessToGoGrabADrink += 50;
-            likelinessToGoGrabADrink += Main.random.nextInt(40);
+        if (ps.getEnergy()<0.30){
+            ps.setState(TalkingState.getInstance());
+        } else {
+            int likelinessToGoGrabADrink = 0;//out of 100
+            //if has no alcohol and has money, then create a chance to go get a drink
+            if (!ps.hasAlcohol() && ps.getSpendableMoney() > 0) {
+                //if has no alcohol average of 70 percent chance to go get drinks
+                likelinessToGoGrabADrink += 50;
+                likelinessToGoGrabADrink += Main.random.nextInt(40);
 
-            //if low on energy also make that a reason  to get a drink
-            if (ps.getEnergy() < ((float) Main.random.nextInt(10))/100) { //if energy at least lower than 10
-               likelinessToGoGrabADrink += 10 - ps.getEnergy()*100;
+                //if low on energy also make that a reason  to get a drink
+                if (ps.getEnergy() < ((float) Main.random.nextInt(10)) / 100) { //if energy at least lower than 10
+                    likelinessToGoGrabADrink += 10 - ps.getEnergy() * 100;
+                }
+            }
+            //note if likeliness is 0, then chance is also 0, if likeliness is 100 then chance is also 100
+            if (likelinessToGoGrabADrink > Main.random.nextInt(100)) {
+                //set Nextstate to be drinking!!!
+                ps.setState(GoToBarState.getInstance());
+            } else {
+                //set Nextstate to be dancing !!!
+                ps.setState(this);
             }
         }
-
-        //note if likeliness is 0, then chance is also 0, if likeliness is 100 then chance is also 100
-        if(likelinessToGoGrabADrink > Main.random.nextInt(100)){
-            //set Nextstate to be drinking!!!
-            ps.setState(GoToBarState.getInstance());
-        } else {
-            //set Nextstate to be dancing !!!
-            ps.setState(this);
-        }
-
     }
 
     @Override
