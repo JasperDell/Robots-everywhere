@@ -18,7 +18,6 @@ public class TalkingState extends State {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
         ps.addToEnergy(2*((Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
-        System.out.println(ps.getEnergy());
         //if we have alcohol and are at the talking state
         float leastTimeToTakeNextSip = ps.getLastSipTime() + 2f/(ps.getPerson().getSipsPerHour()); //every half minute
         boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
@@ -59,11 +58,38 @@ public class TalkingState extends State {
 
     @Override
     public void setGoalPosition(PersonState ps) {
+        if (isAtTargetBarObject(ps.getGoalPosition(), 0)) {
+            //if at that goal
+            if (ps.getGoalPosition().equals(ps.getPosition())) {
+                //were dancing so move a little
+                Position targetPosition = ps.getPosition().clone();
+                if (Main.random.nextBoolean()) {//move up
+                    targetPosition.addToX(1);
+                } else { //or down
+                    targetPosition.addToX(-1);
+                }
 
-    }
+                if (Main.random.nextBoolean()) {//move up
+                    targetPosition.addToY(1);
+                } else { //or down
+                    targetPosition.addToY(-1);
+                }
+
+                if (isAtTargetBarObject(targetPosition, 0)) {
+                    ps.setGoalPosition(targetPosition);
+                }
+
+            } //else just keep going to that goal
+            //if we dont have a goal on the dancefloor, set a new goal on the dancefloor
+        }  else {
+            float x = Main.clubs.get(0).getBarObjects()[7][0] + Main.random.nextInt(Main.clubs.get(0).getBarObjects()[7][2]);
+            float y = Main.clubs.get(0).getBarObjects()[7][1] + Main.random.nextInt(Main.clubs.get(0).getBarObjects()[7][3]);
+            ps.setGoalPosition(new Position(x, y));
+        }
+        }
 
     @Override
     public int[] getTargetBarObject() {
-        return Main.clubs.get(0).danceFloor;
+        return Main.clubs.get(0).standingPlaces[2];
     }
 }

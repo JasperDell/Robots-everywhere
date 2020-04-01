@@ -27,11 +27,11 @@ public class GoToBarState extends State {
             ps.setDrinkPouringTimeLeft(minutesOfPouring / 60f);//time is in hours
             ps.setState(WaitForDrinkState.getInstance());
         //still having alcohol or having no money means you shouldn't go to bar
-        } else if (ps.hasAlcohol() || ps.getSpendableMoney() <= 0){
+        } else if (ps.hasAlcohol() || ps.getSpendableMoney() <= 0 && ps.getEnergy() > 0.5){
             ps.setState(DancingState.getInstance());
-        } else {
-            ps.setState(this);
-        }
+        } else if (ps.getEnergy() < 0.3){
+            ps.setState(TalkingState.getInstance());
+        } else ps.setState(this);
     }
 
     @Override
