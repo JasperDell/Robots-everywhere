@@ -17,12 +17,14 @@ public class DancingState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-        ps.addToEnergy(4*(-(Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
-        //if we have alcohol and are at the dancefloor
-        float leastTimeToTakeNextSip = ps.getLastSipTime() + 1f/(ps.getPerson().getSipsPerHour()); //every quarter minute
-        boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
+        //spend 20 percent of energy per hour, aka be able to stay dancing for 5 hours
+        //however stop dancing at 30 percent energy so effectively dance for 5*.7 = 3.5 hours
+        ps.addToEnergy(-1* (20f/100f * Day.timeIncrementInHours));
+
+        //once on the dancefloor and dancing you are always at the goalposition
+        //as youre not targeting a spot thats further away than you can walk in a timestep
         boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());
-        if (canTakeNextSip && ps.hasAlcohol() && notWalking) {
+        if (ps.canTakeNextSip() && notWalking) {
             ps.takeSip();
             ps.setLastSipTime(ps.getTime());
         }
@@ -38,17 +40,16 @@ public class DancingState extends State {
         if (ps.getEnergy()<0.30){
             ps.setState(TalkingState.getInstance());
         } else {
-            int likelinessToGoGrabADrink = 0;//out of 100
+            float likelinessToGoGrabADrink = 0;//out of 100
             //if has no alcohol and has money, then create a chance to go get a drink
             if (!ps.hasAlcohol() && ps.getSpendableMoney() > 0) {
-                //if has no alcohol average of 70 percent chance to go get drinks
-                likelinessToGoGrabADrink += 50;
-                likelinessToGoGrabADrink += Main.random.nextInt(40);
-
-                //if low on energy also make that a reason  to get a drink
-                if (ps.getEnergy() < ((float) Main.random.nextInt(10)) / 100) { //if energy at least lower than 10
-                    likelinessToGoGrabADrink += 10 - ps.getEnergy() * 100;
-                }
+                //if has no alcohol average of 85 percent chance per hour to go get drinks, least 70, high 100
+                likelinessToGoGrabADrink += 70;
+                likelinessToGoGrabADrink += Main.random.nextInt(30);
+                //kansrekening werkt niet zo 2* 0.5 kans is niet hetzelfde als 1* 1 kans, gemiddeld wel though
+                //we doen hier dus x* (1/x) * y kans, als die x heel groot is, dan is het allemaal ongeveer hetzelfde,
+                //dus hoe kleiner te timestep hoe nauwkeuriger? dat is vast hoe het werkt
+                likelinessToGoGrabADrink *= Day.timeIncrementInHours; //multiply by the amount of hours in this step
             }
             //note if likeliness is 0, then chance is also 0, if likeliness is 100 then chance is also 100
             if (likelinessToGoGrabADrink > Main.random.nextInt(100)) {
@@ -63,28 +64,36 @@ public class DancingState extends State {
 
     @Override
     public void setGoalPosition(PersonState ps) {
-        //if already has a goal on the dancefloor
+        //TODO: make dancing not depend on simuluation time
+        //float secondsPerTick = Day.timeIncrementInHours * 3600;
+        //float secondsPerDanceMove = 2f;
+        //float tickPerMove = secondsPerDanceMove / secondsPerTick;
+
         if (isAtTargetBarObject(ps.getGoalPosition(), 0)){
-            //if at that goal
             if(ps.getGoalPosition().equals(ps.getPosition())){
                 //were dancing so move a little
                 Position targetPosition = ps.getPosition().clone();
-                if(Main.random.nextBoolean()){//move up
-                    targetPosition.addToX(1);
-                } else{ //or down
-                    targetPosition.addToX(-1);
-                }
+                //1.08 km/h == 30cm per second
+                float speed =  (0.54f * 1000f)/0.03f * Day.timeIncrementInHours;
 
-                if(Main.random.nextBoolean()){//move up
-                    targetPosition.addToY(1);
-                } else{ //or down
-                    targetPosition.addToY(-1);
+                //select one cardinal direction to move in
+                if (Main.random.nextBoolean()) {
+                    if (Main.random.nextBoolean()) {
+                        targetPosition.addToX(speed);
+                    } else { //or down
+                        targetPosition.addToX(-1 * speed);
+                    }
+                } else {
+                    if (Main.random.nextBoolean()) {
+                        targetPosition.addToY(speed);
+                    } else {
+                        targetPosition.addToY(-1 * speed);
+                    }
                 }
-
-                if(isAtTargetBarObject(targetPosition, 0)){
+                //if not wanting to move outside of bar
+                if (isAtTargetBarObject(targetPosition, 0)) {
                     ps.setGoalPosition(targetPosition);
                 }
-
             } //else just keep going to that goal
         //if we dont have a goal on the dancefloor, set a new goal on the dancefloor
         } else {

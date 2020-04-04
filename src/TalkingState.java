@@ -17,12 +17,12 @@ public class TalkingState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-        ps.addToEnergy(2*((Main.getLastClose()-Main.getFirstOpen())*Day.timeIncrementInHours)/100);
+        //spend 10 percent of energy per hour, aka be able to stay talking for 10 hours
+        //however when entering this state were at 30 percent, so effectively 3 hours
+        ps.addToEnergy(-1* (10f/100f * Day.timeIncrementInHours));
         //if we have alcohol and are at the talking state
-        float leastTimeToTakeNextSip = ps.getLastSipTime() + 2f/(ps.getPerson().getSipsPerHour()); //every half minute
-        boolean canTakeNextSip = ps.getTime() >= leastTimeToTakeNextSip;
         boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());
-        if (canTakeNextSip && ps.hasAlcohol() && notWalking) {
+        if (ps.canTakeNextSip() && notWalking) {
             ps.takeSip();
             ps.setLastSipTime(ps.getTime());
         }
@@ -63,22 +63,27 @@ public class TalkingState extends State {
             if (ps.getGoalPosition().equals(ps.getPosition())) {
                 //were dancing so move a little
                 Position targetPosition = ps.getPosition().clone();
-                if (Main.random.nextBoolean()) {//move up
-                    targetPosition.addToX(1);
-                } else { //or down
-                    targetPosition.addToX(-1);
-                }
+                //0.27 km/h == 7cm per second
+                float speed =  (0.27f * 1000f)/0.03f * Day.timeIncrementInHours;
 
-                if (Main.random.nextBoolean()) {//move up
-                    targetPosition.addToY(1);
-                } else { //or down
-                    targetPosition.addToY(-1);
+                //select one cardinal direction to move in
+                if (Main.random.nextBoolean()) {
+                    if (Main.random.nextBoolean()) {
+                        targetPosition.addToX(speed);
+                    } else { //or down
+                        targetPosition.addToX(-1 * speed);
+                    }
+                } else {
+                    if (Main.random.nextBoolean()) {
+                        targetPosition.addToY(speed);
+                    } else {
+                        targetPosition.addToY(-1 * speed);
+                    }
                 }
 
                 if (isAtTargetBarObject(targetPosition, 0)) {
                     ps.setGoalPosition(targetPosition);
                 }
-
             } //else just keep going to that goal
             //if we dont have a goal on the dancefloor, set a new goal on the dancefloor
         }  else {
@@ -86,7 +91,7 @@ public class TalkingState extends State {
             float y = Main.clubs.get(0).getBarObjects()[7][1] + Main.random.nextInt(Main.clubs.get(0).getBarObjects()[7][3]);
             ps.setGoalPosition(new Position(x, y));
         }
-        }
+    }
 
     @Override
     public int[] getTargetBarObject() {

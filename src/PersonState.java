@@ -79,6 +79,13 @@ public class PersonState {
         }
     }
 
+
+
+    boolean canTakeNextSip(){
+        float leastTimeToTakeNextSip = getLastSipTime() + 2f/(getPerson().getSipsPerHour());
+        return getTime() >= leastTimeToTakeNextSip;
+    }
+
     public void addToEnergy(float energy) {
         this.energy = Math.min(1f, Math.max(this.energy+energy, 0f));
     }
