@@ -206,10 +206,10 @@ public class Main {
 
 
         //for happiness, happiness not yet implemented
-        /*try {
+        try {
             FileWriter writer = new FileWriter("Happiness.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            int put = 0;
+            float put = 0;
             for(int k = 0; k<people.size(); k++) {
                 bufferedWriter.write("Happiness" + k);
                 bufferedWriter.write(" ");
@@ -218,7 +218,7 @@ public class Main {
                 bufferedWriter.newLine();
                 for (int k = 0; k<people.size(); k++) { //go trough all people
                     put = people.get(k).getStates().get(i).getHappiness();
-                    bufferedWriter.write(Integer.toString(put));
+                    bufferedWriter.write(String.format("%.2f", put));
                     bufferedWriter.write(" ");
                 }
             }
@@ -226,7 +226,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         } //end happiness
-        */
+
 
         //for energy
         try {
