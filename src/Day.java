@@ -7,6 +7,8 @@ public class Day {
     private final float endTime;
     private final int sleepTime;
 
+    private static final boolean useVisualisation = false;
+
     private PersonBehaviour pBehaviour = new PersonBehaviour();
     public float currentTime;
 
@@ -19,36 +21,43 @@ public class Day {
     }
 
     public void simulate() {
-        // Initialize visualisation.
-        // TODO: If implementing multiple clubs, the club should hold the frame.
-        Frame.Start(this);
-        while(this.currentTime <= this.endTime) {
-            long startCalculationTime = System.currentTimeMillis();
-            // Create new states for people and clubs.
-            //Persons and clubs keep track of all the states they have been in
-            //in the form of a 'person/club state' class
-            this.createNewStates();
+        if (useVisualisation) {
+            // Initialize visualisation.
+            // TODO: If implementing multiple clubs, the club should hold the frame.
+            Frame.Start(this);
+            while (this.currentTime <= this.endTime) {
+                long startCalculationTime = System.currentTimeMillis();
+                // Create new states for people and clubs.
+                //Persons and clubs keep track of all the states they have been in
+                //in the form of a 'person/club state' class
+                this.createNewStates();
 
-            // Simulate the current time.
-            // TODO: Update clubs
-            PersonBehaviour.updatePersons();
+                // Simulate the current time.
+                // TODO: Update clubs
+                PersonBehaviour.updatePersons();
 
-            // Update visualisation.
-            Frame.Update(this);
+                // Update visualisation.
+                Frame.Update(this);
 
 
-            long endCalculationTime = System.currentTimeMillis();
-            // Sleep for a short while before beginning again.
-            try {
-                int calculationDuration = (int)(endCalculationTime -startCalculationTime);
-                Thread.sleep(Math.max(0, sleepTime - calculationDuration));
+                long endCalculationTime = System.currentTimeMillis();
+                // Sleep for a short while before beginning again.
+                try {
+                    int calculationDuration = (int) (endCalculationTime - startCalculationTime);
+                    Thread.sleep(Math.max(0, sleepTime - calculationDuration));
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+
+                // Set next time for simulation.
+                this.currentTime = this.currentTime + timeIncrementInHours;
             }
-            catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
+        } else {
+            while (this.currentTime <= this.endTime) {
+                this.createNewStates();
+                PersonBehaviour.updatePersons();
+                this.currentTime = this.currentTime + timeIncrementInHours;
             }
-
-            // Set next time for simulation.
-            this.currentTime = this.currentTime + timeIncrementInHours;
         }
         // Ended simulation of day.
         System.out.println("[TODO] end of simulation!");
