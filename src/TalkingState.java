@@ -17,9 +17,10 @@ public class TalkingState extends State {
     public void takeAction(PersonState ps) {
         setGoalPosition(ps);
         moveToGoalPosition(ps);
-        //spend 10 percent of energy per hour, aka be able to stay talking for 10 hours
-        //however when entering this state were at 30 percent, so effectively 3 hours
-        ps.addToEnergy(-1* (10f/100f * Day.timeIncrementInHours));
+        //gain 20 percent of energy per hour
+        //we stopped dancing at 30 and will start at 60
+        //so we stay here for 1.5 hour
+        ps.addToEnergy((20f/100f * Day.timeIncrementInHours));
         //if we have alcohol and are at the talking state
         boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());
         if (notWalking) {
