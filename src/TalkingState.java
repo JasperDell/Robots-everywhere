@@ -59,9 +59,8 @@ public class TalkingState extends State {
     @Override
     public void setGoalPosition(PersonState ps) {
         if (isAtTargetBarObject(ps.getGoalPosition(), 0)) {
-            //if at that goal
             if (ps.getGoalPosition().equals(ps.getPosition())) {
-                //were dancing so move a little
+                //were not standing completely still while talking
                 Position targetPosition = ps.getPosition().clone();
                 //0.27 km/h == 7cm per second
                 float speed =  (0.27f * 1000f)/0.03f * Day.timeIncrementInHours;
@@ -84,11 +83,10 @@ public class TalkingState extends State {
                 if (isAtTargetBarObject(targetPosition, 0)) {
                     ps.setGoalPosition(targetPosition);
                 }
-            } //else just keep going to that goal
-            //if we dont have a goal on the dancefloor, set a new goal on the dancefloor
+            }
         }  else {
-            float x = Main.clubs.get(0).getBarObjects()[7][0] + Main.random.nextInt(Main.clubs.get(0).getBarObjects()[7][2]);
-            float y = Main.clubs.get(0).getBarObjects()[7][1] + Main.random.nextInt(Main.clubs.get(0).getBarObjects()[7][3]);
+            float x = getTargetBarObject()[0] + Main.random.nextInt(getTargetBarObject()[2]);
+            float y = getTargetBarObject()[1] + Main.random.nextInt(getTargetBarObject()[3]);
             ps.setGoalPosition(new Position(x, y));
         }
     }
