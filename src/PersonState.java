@@ -43,11 +43,24 @@ public class PersonState {
     ////////////
     /////some less intuitive getters and setters
     /////////////
+    public float getHappiness(){
+        float percentageTowardsAlcoholLimit = (float)drinksConsumed / (float)person.getAlcoholTolerance();
+        if(state instanceof DancingState){
+            //if we're dancing energy only counts half
+            return percentageTowardsAlcoholLimit * 0.25f + energy * 0.25f + 0.5f;
+        } else {
+            return percentageTowardsAlcoholLimit * 0.5f + energy * 0.5f;
+        }
+    }
+
     public boolean isWantingToBeAtClub(){
         if (drinksConsumed > person.getAlcoholTolerance()){
             return false;
         }
         if(energy <= 0){
+            return false;
+        }
+        if (getHappiness() <= 0){
             return false;
         }
         //include happiness when implemented

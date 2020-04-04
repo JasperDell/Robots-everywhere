@@ -7,7 +7,7 @@ public class Day {
     private final float endTime;
     private final int sleepTime;
 
-    private static final boolean useVisualisation = false;
+    private static final boolean useVisualisation = true;
 
     private PersonBehaviour pBehaviour = new PersonBehaviour();
     public float currentTime;
@@ -16,7 +16,8 @@ public class Day {
         startTime = Main.getFirstOpen();
         endTime = Main.getLastClose();
         this.currentTime = startTime;
-        int simulationDuration =2* 60*1000;//10 * 60 * 1000;//10 minutes
+        //0 means as fast as it can go!!
+        int simulationDuration =0;//10 * 60 * 1000;//10 minutes
         this.sleepTime = (int) ((simulationDuration * timeIncrementInHours) / (endTime - startTime));//2 * 1000  / ((int)Math.ceil((endTime - startTime) / timeIncrement) + 1);
     }
 

@@ -29,7 +29,7 @@ public class Main {
 
     private static void initialize() {
         initializeClubs();
-        initializePeople(1);
+        initializePeople(100);
         initializeDays();
 
         // Let all people enter the club.
@@ -57,8 +57,6 @@ public class Main {
         }
         return max;
     }
-
-
 
     private static void initializePeople(int amount){
         for (int i = 0; i < amount; i++) {
@@ -172,7 +170,6 @@ public class Main {
 
         //for club
         try {
-
             FileWriter writer = new FileWriter("Club.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             int put = 2;
