@@ -23,22 +23,24 @@ public class OutsideState extends State {
     @Override
     public void moveNextState(PersonState ps) {
         //if time is big enough to enter the club, enter the club
-
         if(ps.isWantingToBeAtClub() && ps.getPerson().getArrivalTime() <= Main.days.get(0).currentTime){
             ps.setPosition(new Position (getTargetBarObject()[0], getTargetBarObject()[1])); //put em at the entrance
             ps.getPerson().enterClub(Main.clubs.get(0));
             ps.setState(DancingState.getInstance());
-            return;
         } else {
             ps.setState(this);
-            return;
         }
     }
 
     @Override
     public void setGoalPosition(PersonState ps) {
         //goal is exit, exit is next to entrance but lower
-        ps.setGoalPosition(new Position (getTargetBarObject()[0], getTargetBarObject()[1] + 40));
+        Position exit = new Position (getTargetBarObject()[0], getTargetBarObject()[1]);
+        if (! ps.getGoalPosition().equals(exit)){
+            ps.getPerson().leaveClub(Main.clubs.get(0));
+            ps.setGoalPosition(exit);
+        }
+
     }
 
     @Override

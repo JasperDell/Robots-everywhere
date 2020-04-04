@@ -26,7 +26,8 @@ public class ClubState {
 
     public int getMoneySpend() {
         int total = 0;
-        for(Person person : this.crowd) {
+        for(Person person : Main.people) {
+            //get the amount of money spend until this time
             total += person.getStateForTime(time).getMoneySpend();
         }
         return total;
