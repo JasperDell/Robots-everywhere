@@ -7,7 +7,7 @@ public class Day {
     private final float endTime;
     private final int sleepTime;
 
-    private static final boolean useVisualisation = true;
+    private static final boolean useVisualisation = false;
 
     private PersonBehaviour pBehaviour = new PersonBehaviour();
     public float currentTime;
@@ -60,6 +60,8 @@ public class Day {
             }
         }
         // Ended simulation of day.
+        System.out.println("money spent: ");
+        System.out.println(Main.clubs.get(0).getTotalMoneySpend(Main.people.get(0).getStates().size() -1));
         System.out.println("[TODO] end of simulation!");
         Main.LogInfo(Main.clubs.get(0));
     }

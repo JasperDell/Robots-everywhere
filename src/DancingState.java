@@ -24,9 +24,8 @@ public class DancingState extends State {
         //once on the dancefloor and dancing you are always at the goalposition
         //as youre not targeting a spot thats further away than you can walk in a timestep
         boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());
-        if (ps.canTakeNextSip() && notWalking) {
+        if (notWalking) {
             ps.takeSip();
-            ps.setLastSipTime(ps.getTime());
         }
     }
 

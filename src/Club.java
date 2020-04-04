@@ -64,20 +64,11 @@ public class Club {
     public int getNumberOfPeopleDancing(int i) {return this.states.get(i).getNumberOfPeopleDancing();}
 
     public int getTotalMoneySpend(){
-        int total = 0;
-        for (ClubState state : this.states) {
-            total += state.getMoneySpend();
-        }
-        return total;
+        return this.currentState.getMoneySpend();
     }
 
     public int getTotalMoneySpend(int uptillhere){
-        int total = 0;
-        for (int i = 0; i < this.states.size() || i < uptillhere; i++) {
-            ClubState state = states.get(i);
-            total += state.getMoneySpend();
-        }
-        return total;
+        return states.get(uptillhere).getMoneySpend();
     }
 
     ClubState getCurrentState() {

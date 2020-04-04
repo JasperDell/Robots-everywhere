@@ -29,7 +29,7 @@ public class Main {
 
     private static void initialize() {
         initializeClubs();
-        initializePeople(10);
+        initializePeople(1);
         initializeDays();
 
         // Let all people enter the club.

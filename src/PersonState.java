@@ -60,9 +60,15 @@ public class PersonState {
     }
 
     public void takeSip() {
-        this.amountOfAlcohol--;
-        if(!this.hasAlcohol())
-            drinksConsumed++;
+        //only take a sip when you have alcohol
+        //and enough time has passed
+        if (hasAlcohol() && canTakeNextSip()) {
+            setLastSipTime(time);
+            this.amountOfAlcohol--;
+            if (!this.hasAlcohol()) {
+                drinksConsumed++;
+            }
+        }
     }
 
     public float getEnergy() {
@@ -81,7 +87,7 @@ public class PersonState {
 
 
 
-    boolean canTakeNextSip(){
+    private boolean canTakeNextSip(){
         float leastTimeToTakeNextSip = getLastSipTime() + 2f/(getPerson().getSipsPerHour());
         return getTime() >= leastTimeToTakeNextSip;
     }
@@ -149,7 +155,7 @@ public class PersonState {
         return lastSipTime;
     }
 
-    public void setLastSipTime(float lastSipTime) {
+    private void setLastSipTime(float lastSipTime) {
         this.lastSipTime = lastSipTime;
     }
 

@@ -22,9 +22,8 @@ public class TalkingState extends State {
         ps.addToEnergy(-1* (10f/100f * Day.timeIncrementInHours));
         //if we have alcohol and are at the talking state
         boolean notWalking = ps.getPosition().equals(ps.getGoalPosition());
-        if (ps.canTakeNextSip() && notWalking) {
+        if (notWalking) {
             ps.takeSip();
-            ps.setLastSipTime(ps.getTime());
         }
     }
 
