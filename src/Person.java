@@ -15,13 +15,13 @@ public class Person {
     private final int initialLikenessToDrink;
     private final int initialHappiness;
     private final float initialEnergy;
-    private final int sipsPerHour;
+    private final float sipsPerHour;
     private final float arrivalTime;
 
     private List<PersonState> states;
     private PersonState currentState;
 
-    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy, int sipsPerHour, float arrivalTime) {
+    public Person(int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy, float sipsPerHour, float arrivalTime) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -127,8 +127,12 @@ public class Person {
         return states;
     }
 
-    public int getSipsPerHour() {
-        return sipsPerHour;
+    public float getSipsPerHour() {
+        float musicModified = Main.clubs.get(0).getMusicVolumeBasedDrinkSpeedModifier() * sipsPerHour;
+        if (musicModified > 60){
+            return 60;//cap at a sip per minute;
+        }
+        return musicModified;
     }
 
     public float getArrivalTime() {

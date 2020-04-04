@@ -7,7 +7,7 @@ public class ClubState {
     private final Club club;
     private final float time;
 
-    private int musicVolume;
+    private float musicVolume;
     private List<Person> crowd;
 
     public ClubState(Club club, float time){
@@ -16,12 +16,14 @@ public class ClubState {
         this.crowd = new ArrayList<>();
     }
 
-    public int getMusicVolume() {
+    public float getMusicVolume() {
         return musicVolume;
     }
 
-    public void setMusicVolume(int musicVolume) {
-        this.musicVolume = musicVolume;
+    public void setMusicVolume(float musicVolume) {
+        if (!(musicVolume > 1 || musicVolume < 0)) {
+            this.musicVolume = musicVolume;
+        }
     }
 
     public int getMoneySpend() {

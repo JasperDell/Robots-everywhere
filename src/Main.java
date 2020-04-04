@@ -90,6 +90,8 @@ public class Main {
 
     private static void initializeClubs(){
         clubs.add(new Club());
+        //when 0 patrons drink a quarter slower, when 1 patrons drink a quarter faster
+        clubs.get(0).setMusicVolume(0.5f);
     }
 
     private static void initializeDays(){

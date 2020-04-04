@@ -101,7 +101,7 @@ public class PersonState {
 
 
     private boolean canTakeNextSip(){
-        float leastTimeToTakeNextSip = getLastSipTime() + 2f/(getPerson().getSipsPerHour());
+        float leastTimeToTakeNextSip = getLastSipTime() + 1f/(getPerson().getSipsPerHour());
         return getTime() >= leastTimeToTakeNextSip;
     }
 

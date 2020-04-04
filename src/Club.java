@@ -41,11 +41,11 @@ public class Club {
         return state;
     }
 
-    public int getMusicVolume() {
-        return this.currentState.getMusicVolume();
+    public float getMusicVolumeBasedDrinkSpeedModifier() {
+        return 0.75f * (this.currentState.getMusicVolume() / 2);
     }
 
-    public void setMusicVolume(int musicVolume) {
+    public void setMusicVolume(float musicVolume) {
         this.currentState.setMusicVolume(musicVolume);
     }
 
