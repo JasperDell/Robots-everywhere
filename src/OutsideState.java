@@ -28,8 +28,10 @@ public class OutsideState extends State {
             ps.setPosition(new Position (getTargetBarObject()[0], getTargetBarObject()[1])); //put em at the entrance
             ps.getPerson().enterClub(Main.clubs.get(0));
             ps.setState(DancingState.getInstance());
+            return;
         } else {
             ps.setState(this);
+            return;
         }
     }
 

@@ -31,7 +31,8 @@ public class GoToBarState extends State {
             ps.setState(DancingState.getInstance());
         } else if (ps.getEnergy() < 0.3){
             ps.setState(TalkingState.getInstance());
-        } else ps.setState(this);
+        } else
+            ps.setState(this);
     }
 
     @Override

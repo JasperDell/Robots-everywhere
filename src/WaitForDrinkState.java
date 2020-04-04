@@ -22,7 +22,11 @@ public class WaitForDrinkState extends State {
     @Override
     public void moveNextState(PersonState ps) {
         if(ps.hasAlcohol()){
-            ps.setState(DancingState.getInstance());
+            if (ps.getEnergy()<0.30){
+                ps.setState(TalkingState.getInstance());
+            } else {
+                ps.setState(DancingState.getInstance());
+            }
         } else {
             ps.setState(this);
         }

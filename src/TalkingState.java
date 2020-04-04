@@ -36,6 +36,7 @@ public class TalkingState extends State {
         }
         if (ps.getEnergy()>0.60){
             ps.setState(DancingState.getInstance());
+            return;
         } else {
             int likelinessToGoGrabADrink = 0;//out of 100
             //if has no alcohol and has money, then create a chance to go get a drink
@@ -49,11 +50,10 @@ public class TalkingState extends State {
             if (likelinessToGoGrabADrink > random.nextInt(100)) {
                 //set Nextstate to be drinking!!!
                 ps.setState(GoToBarState.getInstance());
-            } else {
-                //set Nextstate to be
-                ps.setState(this);
+                return;
             }
         }
+        ps.setState(this);
     }
 
     @Override
