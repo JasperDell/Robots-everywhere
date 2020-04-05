@@ -74,7 +74,11 @@ public class Main {
             //int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy
             float arrivalTime = clubs.get(0).openTime + random.nextFloat() * (clubs.get(0).closeTime - clubs.get(0).openTime- 2f);//arrive somewhere between opening and 2 hours before close
             System.out.println("arrivaltime "+arrivalTime);
-            Person person = new Person(index, name, gender, Variables.initialAlcoholTolerance ,Variables.danceAffinity, Variables.initialMoney, Variables.initialLikenessToDrink, Variables.initialHappiness, Variables.energy, Variables.sipsPerHour, arrivalTime);
+             int danceAffinity = random.nextInt(20);
+             int initialLikenessToDrink= (70); // value between 0 and 100
+             int initialHappiness = (50 + random.nextInt(26)); // value between 50 and 75
+             float energy = 1f;
+            Person person = new Person(index, name, gender, Variables.initialAlcoholTolerance ,danceAffinity, Variables.initialMoney, initialLikenessToDrink, initialHappiness, energy, Variables.sipsPerHour, arrivalTime);
             people.add(person);
         }
     }
@@ -124,153 +128,163 @@ public class Main {
         LogPeopleToTerminal();
         // TODO prepare data for MATLAB
         //for position
-        try {
-            FileWriter writer = new FileWriter("Position.txt", false);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            float x = 0;
-            float y = 0;
-            for(int k = 0; k < people.size(); k++) {
-                bufferedWriter.write('X' + Integer.toString(k));
-                bufferedWriter.write(" ");
-                bufferedWriter.write('Y' + Integer.toString(k));
-                bufferedWriter.write(" ");
-            }
-
-            for(int i = 0; i < people.get(0).getStates().size(); i++) { //go trough all states
-                bufferedWriter.newLine();
-                for (int k = 0; k < people.size(); k++) {//go trough all people in those states
-
-                    x = people.get(k).getStates().get(i).getPosition().getX();
-                    y = people.get(k).getStates().get(i).getPosition().getY();
-                    bufferedWriter.write(Float.toString(x));
+        if(Variables.makePositiontxt) {
+            try {
+                FileWriter writer = new FileWriter("Position.txt", false);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                float x = 0;
+                float y = 0;
+                for (int k = 0; k < people.size(); k++) {
+                    bufferedWriter.write('X' + Integer.toString(k));
                     bufferedWriter.write(" ");
-                    bufferedWriter.write(Float.toString(y));
+                    bufferedWriter.write('Y' + Integer.toString(k));
                     bufferedWriter.write(" ");
                 }
-            }
 
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } //end position
+                for (int i = 0; i < people.get(0).getStates().size(); i++) { //go trough all states
+                    bufferedWriter.newLine();
+                    for (int k = 0; k < people.size(); k++) {//go trough all people in those states
 
+                        x = people.get(k).getStates().get(i).getPosition().getX();
+                        y = people.get(k).getStates().get(i).getPosition().getY();
+                        bufferedWriter.write(Float.toString(x));
+                        bufferedWriter.write(" ");
+                        bufferedWriter.write(Float.toString(y));
+                        bufferedWriter.write(" ");
+                    }
+                }
+
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } //end position
+        }
         //for club
-        try {
-            FileWriter writer = new FileWriter("Club.txt", false);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            int put = 2;
-            //for(int k = 0; k<club.crowd[0].size(); k++) {
-            bufferedWriter.write("Money_spent"); //totalMoneySpend
-            bufferedWriter.write(" ");
-
-            bufferedWriter.write("Amount_people"); //numberOfPeople
-            bufferedWriter.write(" ");
-
-            bufferedWriter.write("People_dancing"); //numberOfPeopleDancing
-            bufferedWriter.write(" ");
-            //}
-            for(int i = 0; i < people.get(0).getStates().size(); i++) {
-                put = club.getTotalMoneySpend(i);
-                bufferedWriter.newLine();
-                bufferedWriter.write(Integer.toString(put));
-
-                put = club.getNumberOfPeople(i);
+        if(Variables.makeClubtxt) {
+            try {
+                FileWriter writer = new FileWriter("Club.txt", false);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                int put = 2;
+                //for(int k = 0; k<club.crowd[0].size(); k++) {
+                bufferedWriter.write("Money_spent"); //totalMoneySpend
                 bufferedWriter.write(" ");
-                bufferedWriter.write(Integer.toString(put));
 
-                put = club.getNumberOfPeopleDancing(i);
+                bufferedWriter.write("Amount_people"); //numberOfPeople
                 bufferedWriter.write(" ");
-                bufferedWriter.write(Integer.toString(put));
-            }
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } // end club
+
+                bufferedWriter.write("People_dancing"); //numberOfPeopleDancing
+                bufferedWriter.write(" ");
+                //}
+                for (int i = 0; i < people.get(0).getStates().size(); i++) {
+                    put = club.getTotalMoneySpend(i);
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(Integer.toString(put));
+
+                    put = club.getNumberOfPeople(i);
+                    bufferedWriter.write(" ");
+                    bufferedWriter.write(Integer.toString(put));
+
+                    put = club.getNumberOfPeopleDancing(i);
+                    bufferedWriter.write(" ");
+                    bufferedWriter.write(Integer.toString(put));
+                }
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } // end club
+        }
 
 
 
         //for happiness
-        try {
-            FileWriter writer = new FileWriter("Happiness.txt", false);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            float put = 0;
-            for(int k = 0; k<people.size(); k++) {
-                bufferedWriter.write("Happiness" + k);
-                bufferedWriter.write(" ");
-            }
-            for(int i = 0; i < people.get(0).getStates().size(); i++) { //go trough all states
-                bufferedWriter.newLine();
-                for (int k = 0; k<people.size(); k++) { //go trough all people
-                    put = people.get(k).getStates().get(i).getHappiness();
-                    bufferedWriter.write(Float.toString(put));
+        if(Variables.makeHappinesstxt) {
+            try {
+                FileWriter writer = new FileWriter("Happiness.txt", false);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                float put = 0;
+                for (int k = 0; k < people.size(); k++) {
+                    bufferedWriter.write("Happiness" + k);
                     bufferedWriter.write(" ");
                 }
-            }
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } //end happiness
-
+                for (int i = 0; i < people.get(0).getStates().size(); i++) { //go trough all states
+                    bufferedWriter.newLine();
+                    for (int k = 0; k < people.size(); k++) { //go trough all people
+                        put = people.get(k).getStates().get(i).getHappiness();
+                        bufferedWriter.write(Float.toString(put));
+                        bufferedWriter.write(" ");
+                    }
+                }
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } //end happiness
+        }
 
         //for energy
-        try {
-            FileWriter writer = new FileWriter("energy.txt", false);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            float put = 0;
-            for(int k = 0; k<people.size(); k++) {//go trough all people
-                bufferedWriter.write("energy" + Integer.toString(k));
-                bufferedWriter.write(" ");
-            }
-            for(int i = 0; i < people.get(0).getStates().size(); i++) {//go trough all states
-                bufferedWriter.newLine();
-                for (int k = 0; k<people.size(); k++) {//go trough all people
-                    put = people.get(k).getStates().get(i).getEnergy();
-                    bufferedWriter.write(Float.toString(put));
+        if(Variables.makeEnergytxt) {
+            try {
+                FileWriter writer = new FileWriter("energy.txt", false);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                float put = 0;
+                for (int k = 0; k < people.size(); k++) {//go trough all people
+                    bufferedWriter.write("energy" + Integer.toString(k));
                     bufferedWriter.write(" ");
                 }
-            }
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } //end energy
+                for (int i = 0; i < people.get(0).getStates().size(); i++) {//go trough all states
+                    bufferedWriter.newLine();
+                    for (int k = 0; k < people.size(); k++) {//go trough all people
+                        put = people.get(k).getStates().get(i).getEnergy();
+                        bufferedWriter.write(Float.toString(put));
+                        bufferedWriter.write(" ");
+                    }
+                }
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } //end energy
+        }
 
         //for drinksConsumed
-        try {
-            FileWriter writer = new FileWriter("drinksConsumed.txt", false);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            int put = 0;
-            for(int k = 0; k<people.size(); k++) {
-                bufferedWriter.write("drinksConsumed" + Integer.toString(k));
-                bufferedWriter.write(" ");
-            }
-            for(int i = 0; i < people.get(0).getStates().size(); i++) {
-                bufferedWriter.newLine();
-                for (int k = 0; k<people.size(); k++) {
-                    put = people.get(k).getStates().get(i).getDrinksConsumed();
+        if(Variables.makeDrinksConsumedtxt) {
+            try {
+                FileWriter writer = new FileWriter("drinksConsumed.txt", false);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                int put = 0;
+                for (int k = 0; k < people.size(); k++) {
+                    bufferedWriter.write("drinksConsumed" + Integer.toString(k));
+                    bufferedWriter.write(" ");
+                }
+                for (int i = 0; i < people.get(0).getStates().size(); i++) {
+                    bufferedWriter.newLine();
+                    for (int k = 0; k < people.size(); k++) {
+                        put = people.get(k).getStates().get(i).getDrinksConsumed();
+                        bufferedWriter.write(Integer.toString(put));
+                        bufferedWriter.write(" ");
+                    }
+                }
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } //end drinksConsumed
+        }
+
+        //for drinksConsumed
+        if(Variables.makeTotalDrinksConsumedtxt) {
+            try {
+                FileWriter writer = new FileWriter("totalDrinksConsumed.txt", false);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                int put = 0;
+                bufferedWriter.write("totalDrinksConsumed");
+                for (int i = 0; i < people.get(0).getStates().size(); i++) {
+                    bufferedWriter.newLine();
+                    put = clubs.get(0).getState(i).getTotalDrinksConsumed();
                     bufferedWriter.write(Integer.toString(put));
                     bufferedWriter.write(" ");
                 }
-            }
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } //end drinksConsumed
-
-        //for drinksConsumed
-        try {
-            FileWriter writer = new FileWriter("totalDrinksConsumed.txt", false);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            int put = 0;
-            bufferedWriter.write("totalDrinksConsumed");
-            for(int i = 0; i < people.get(0).getStates().size(); i++) {
-                bufferedWriter.newLine();
-                put = clubs.get(0).getState(i).getTotalDrinksConsumed();
-                bufferedWriter.write(Integer.toString(put));
-                bufferedWriter.write(" ");
-            }
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } //end drinksConsumed
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } //end drinksConsumed
+        }
     }
 }
