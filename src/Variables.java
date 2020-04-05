@@ -12,8 +12,6 @@ public class Variables {
     public static float energy = 1f;
     public static int sipsPerHour = random.nextInt(53) +7;//at least seven sips per hour, max a sip per minute
     public static final boolean useVisualisation = false;
-
-
- public static float musicVolume = 0.5f;
+    public static float musicVolume = 0.5f;
 
 }

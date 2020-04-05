@@ -35,6 +35,15 @@ public class ClubState {
         return total;
     }
 
+    public int getTotalDrinksConsumed() {
+        int total = 0;
+        for(Person person : Main.people) {
+            //get the amount of money spend until this time
+            total += person.getStateForTime(time).getDrinksConsumed();
+        }
+        return total;
+    }
+
     public int getNumberOfPeople() {
         return this.crowd.size();
     }

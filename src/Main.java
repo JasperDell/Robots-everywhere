@@ -107,14 +107,7 @@ public class Main {
     public static void LogPeopleToTerminal () {
         for (Person person : people) {
             System.out.println("--------------------------------------");
-            //hasjoinedclubthisstate will be determined by states later on
-           /* if (person.getCurrentState().isHasJoinedClubThisState()) { // First time this person is inside the club
-                System.out.println("(" + person.getId() + ") " + person.getName() + " joined the club!");
-            } else if (person.getCurrentState().isHasLeftClubThisState()) { // person leaves the club
-                System.out.println("(" + person.getId() + ") " + person.getName() + " left the club!");
-            } else { */// Person remains inside club
-                System.out.println("(" + person.getId() + ") " + person.getName());
-            //}
+            System.out.println("(" + person.getId() + ") " + person.getName());
             System.out.print("Gender: ");
             if (person.getGender() == Gender.MALE)
                 System.out.println("Male");
@@ -257,6 +250,23 @@ public class Main {
                     bufferedWriter.write(Integer.toString(put));
                     bufferedWriter.write(" ");
                 }
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } //end drinksConsumed
+
+        //for drinksConsumed
+        try {
+            FileWriter writer = new FileWriter("totalDrinksConsumed.txt", false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            int put = 0;
+            bufferedWriter.write("totalDrinksConsumed");
+            for(int i = 0; i < people.get(0).getStates().size(); i++) {
+                bufferedWriter.newLine();
+                put = clubs.get(0).getState(i).getTotalDrinksConsumed();
+                bufferedWriter.write(Integer.toString(put));
+                bufferedWriter.write(" ");
             }
             bufferedWriter.close();
         } catch (IOException e) {

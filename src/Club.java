@@ -75,6 +75,8 @@ public class Club {
         return this.currentState;
     }
 
+    ClubState getState(int i){return this.states.get(i);}
+
     public int[] getBar() {
         return bar;
     }
