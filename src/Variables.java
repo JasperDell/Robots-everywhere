@@ -1,7 +1,7 @@
 import java.util.*;
 public class Variables {
     public static final Random random = new Random();
-   public static int amountOfPersons = 100;
+    public static int amountOfPersons = 100;
     // Set person starting values
     //alcoholtolerance in units alcohol -> base this on research
     public static int initialAlcoholTolerance = (6+random.nextInt(10));
@@ -11,7 +11,9 @@ public class Variables {
     public static int initialHappiness = (50 + random.nextInt(26)); // value between 50 and 75
     public static float energy = 1f;
     public static int sipsPerHour = random.nextInt(53) +7;//at least seven sips per hour, max a sip per minute
+    public static final boolean useVisualisation = false;
 
-    public static float musicVolume = 0.5f;
+
+ public static float musicVolume = 0.5f;
 
 }

@@ -1,3 +1,5 @@
+import java.time.temporal.ValueRange;
+
 //Day keeps track of the time and runs the simulation
 public class Day {
     //make sure to use timeIncrement when change personState,
@@ -7,7 +9,7 @@ public class Day {
     private final float endTime;
     private final int sleepTime;
 
-    private static final boolean useVisualisation = true;
+    private static final boolean useVisualisation = Variables.useVisualisation;
 
     private PersonBehaviour pBehaviour = new PersonBehaviour();
     public float currentTime;
