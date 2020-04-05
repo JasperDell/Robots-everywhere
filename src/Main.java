@@ -29,7 +29,7 @@ public class Main {
 
     private static void initialize() {
         initializeClubs();
-        initializePeople(100);
+        initializePeople(Variables.amountOfPersons);
         initializeDays();
 
         // Let all people enter the club.
@@ -71,19 +71,10 @@ public class Main {
                 name = Names.female[random.nextInt(Names.female.length)];
             }
 
-            // Set person starting values
-            int initialAlcoholTolerance = (6+random.nextInt(10)); //alcoholtolerance in units alcohol -> base this on research
-            int danceAffinity = random.nextInt(20);
-            int initialMoney = (random.nextInt(20)); //are there really people with no money?
-            int initialLikenessToDrink= (70); // value between 0 and 100
-            int initialHappiness = (50 + random.nextInt(26)); // value between 50 and 75
-            float energy = 1f;
-            float[] initialPosition = (new float[] {190 + random.nextInt(20), 360});
-            int sipsPerHour = random.nextInt(53) +7;//at least seven sips per hour, max a sip per minute
             //int id, String name, Gender gender, int alcoholTolerance, int danceAffinity, int money, int initalLikenessToDrink, int initialHappiness, float initialEnergy
             float arrivalTime = clubs.get(0).openTime + random.nextFloat() * (clubs.get(0).closeTime - clubs.get(0).openTime- 2f);//arrive somewhere between opening and 2 hours before close
             System.out.println("arrivaltime "+arrivalTime);
-            Person person = new Person(index, name, gender, initialAlcoholTolerance ,danceAffinity, initialMoney, initialLikenessToDrink, initialHappiness, energy, sipsPerHour, arrivalTime);
+            Person person = new Person(index, name, gender, Variables.initialAlcoholTolerance ,Variables.danceAffinity, Variables.initialMoney, Variables.initialLikenessToDrink, Variables.initialHappiness, Variables.energy, Variables.sipsPerHour, arrivalTime);
             people.add(person);
         }
     }
@@ -91,7 +82,7 @@ public class Main {
     private static void initializeClubs(){
         clubs.add(new Club());
         //when 0 patrons drink a quarter slower, when 1 patrons drink a quarter faster
-        clubs.get(0).setMusicVolume(0.5f);
+        clubs.get(0).setMusicVolume(Variables.musicVolume);
     }
 
     private static void initializeDays(){
