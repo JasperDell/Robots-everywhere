@@ -27,8 +27,8 @@ public class Visualiser extends JPanel {
             hoursString = "0" + Integer.toString(hours%24);
         }
         g.drawString(hours + "h " + minutesString+"m", 30, 40);
-        g.setColor(Color.RED);
-        g.drawString(" :You will never escape this barren landscape", 80, 40);
+ //       g.setColor(Color.RED);
+ //       g.drawString(" :You will never escape this barren landscape", 80, 40);
 
         // Walls
         g.setColor(Color.BLACK);
