@@ -14,12 +14,12 @@ public class Club {
     //note to do this properly this needs getters as the values of the array can be changed
     //0,1 is position 2,3 is sizex, sizey
     //1 unit is 3cm
-    public final int[] bar = new int[] { 20,220,60,160, 1 };
-    public final int[][] barStools = { {90, 270, 10, 10, 0}, {90, 300, 10, 10, 0}, {90, 330, 10, 10, 0} };
-    public final int[] danceFloor = { 150, 100, 200, 150, 0 };
-    public final int[] entrance = {20,60,20,20,0};
+    public final int[] bar = Variables.bar;
+    public final int[][] barStools = Variables.barStools;
+    public final int[] danceFloor = Variables.danceFloor;
+    public final int[] entrance = Variables.entrance;
     //upper left next to dancefloor, at the bar, under the dancefloor
-    public final int[][] standingPlaces = { {30, 30, 70, 150, 0},{90, 230, 40, 140, 0},{150, 270, 180, 90, 0} };
+    public final int[][] standingPlaces = Variables.standingPlaces;
     public final int[][] barObjects = { bar, danceFloor, barStools[0], barStools[1], barStools[2], standingPlaces[0], standingPlaces[1], standingPlaces[2] };
 
     private List<ClubState> states;

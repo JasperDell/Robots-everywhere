@@ -44,8 +44,13 @@ public class GoToBarState extends State {
         if(!isAtTargetBarObject(ps.getGoalPosition(), 1)){
             int[] bar = getTargetBarObject();
             Position target = new Position();
-            target.setX(bar[0] + Main.random.nextInt(bar[2]));
-            target.setY(bar[1] + Main.random.nextInt(bar[3]));
+            if (Main.random.nextBoolean()) {
+                target.setX(bar[0] + Main.random.nextInt(bar[2]));
+                target.setY(bar[1]);
+            } else {
+                target.setX(bar[0] + bar[2]);
+                target.setY(bar[1] + Main.random.nextInt(bar[3]));
+            }
             ps.setGoalPosition(target);
         }
     }
