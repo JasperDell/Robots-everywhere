@@ -196,7 +196,7 @@ public class Main {
 
 
 
-        //for happiness, happiness not yet implemented
+        //for happiness
         try {
             FileWriter writer = new FileWriter("Happiness.txt", false);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
@@ -209,7 +209,7 @@ public class Main {
                 bufferedWriter.newLine();
                 for (int k = 0; k<people.size(); k++) { //go trough all people
                     put = people.get(k).getStates().get(i).getHappiness();
-                    bufferedWriter.write(String.format("%.2f", put));
+                    bufferedWriter.write(Float.toString(put));
                     bufferedWriter.write(" ");
                 }
             }
